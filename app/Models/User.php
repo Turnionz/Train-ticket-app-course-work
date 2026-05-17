@@ -5,8 +5,11 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Mockery\Generator\StringManipulation\Pass\Pass;
 
 class User extends Authenticatable
 {
@@ -34,6 +37,8 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    public static array $role = ['admin', 'operator', 'employee', 'user'];
+
     /**
      * Get the attributes that should be cast.
      *
@@ -45,5 +50,15 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function passengers(): HasMany
+    {
+        return $this->hasMany(Passenger::class);
+    }
+
+    public function employee(): BelongsTo
+    {
+        return $this->belongsTo(Employee::class);
     }
 }
