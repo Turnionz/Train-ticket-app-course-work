@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Wagon extends Model
 {
@@ -47,5 +48,10 @@ class Wagon extends Model
     public function train(): BelongsTo
     {
         return $this->belongsTo(Train::class);
+    }
+
+    public function seats(): HasMany
+    {
+        return $this->hasMany(Seat::class);
     }
 }
