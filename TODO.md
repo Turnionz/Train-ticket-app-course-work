@@ -1,18 +1,18 @@
 # Migrations
 
-> ## Realize the DB structure with migrations
+> ## ~Realize the DB structure with migrations~
 >
-> > - Create models
-> > - Define the relations
-> > - Create factories
-> > - Set up the seeder
-> > - Create and run migrations
+> > - ~Create models~
+> > - ~Define the relations~
+> > - ~Create factories~
+> > - ~Set up the seeder~
+> > - ~Create and run migrations~
 
 # Auth
 
 > ## Set up the access logic for different level of entry
 >
-> > - Login/create/delete account logic
+> > - ~Login/create/delete account logic~
 > > - Make admin, operator, employee and customer level of access
 > > - Set up the different UI elements depending on the level of access
 

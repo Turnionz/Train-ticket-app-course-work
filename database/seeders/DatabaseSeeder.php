@@ -145,10 +145,15 @@ class DatabaseSeeder extends Seeder
         }
 
         for ($r = 1; $r <= 45; $r++) {
-            $route = Route::create(['name' => "Route {$r}"]);
-
             $currentStationId = $stationIds[array_rand($stationIds)];
             $visitedStations = [$currentStationId];
+
+            // Create the route with the starting station's integer ID 
+            // We use it for both temporarily to satisfy foreign key constraints if needed
+            $route = Route::create([
+                'depart_station' => $currentStationId,
+                'arrival_station' => $currentStationId
+            ]);
 
             $targetStopsCount = rand(5, 18);
             $actualStops = 1;
@@ -178,9 +183,11 @@ class DatabaseSeeder extends Seeder
                 $actualStops++;
             }
 
-            $start = Station::find($visitedStations[0]);
-            $end = Station::find(end($visitedStations));
-            $route->update(['name' => "{$start->address} - {$end->address}"]);
+            // Update the route with the actual arrival station ID now that the path is complete
+            $route->update([
+                'depart_station' => $visitedStations[0],
+                'arrival_station' => end($visitedStations)
+            ]);
         }
 
         $trains = Train::all()->shuffle();
@@ -211,33 +218,37 @@ class DatabaseSeeder extends Seeder
 
             $crew = Crew::factory()->create();
 
-            User::factory(rand(2, 5))
-                ->for(Employee::factory()->state([
+            Employee::factory(rand(2, 5))
+                ->state([
                     'employee_type' => Employee::$type[1],
                     'crew_id' => $crew->id
-                ]))
-                ->create(['role' => User::$role[2]]);
+                ])
+                ->has(User::factory()->state(['role' => User::$role[2]]))
+                ->create();
 
-            User::factory(1)
-                ->for(Employee::factory()->state([
+            Employee::factory()
+                ->state([
                     'employee_type' => Employee::$type[0],
                     'crew_id' => $crew->id
-                ]))
-                ->create(['role' => User::$role[2]]);
+                ])
+                ->has(User::factory()->state(['role' => User::$role[2]]))
+                ->create();
 
-            User::factory(2)
-                ->for(Employee::factory()->state([
+            Employee::factory(2)
+                ->state([
                     'employee_type' => Employee::$type[2],
                     'crew_id' => $crew->id
-                ]))
-                ->create(['role' => User::$role[2]]);
+                ])
+                ->has(User::factory()->state(['role' => User::$role[2]]))
+                ->create();
 
-            User::factory(2)
-                ->for(Employee::factory()->state([
+            Employee::factory(2)
+                ->state([
                     'employee_type' => Employee::$type[3],
                     'crew_id' => $crew->id
-                ]))
-                ->create(['role' => User::$role[2]]);
+                ])
+                ->has(User::factory()->state(['role' => User::$role[2]]))
+                ->create();
 
             Assignment::factory()->create([
                 'crew_id' => $crew->id,

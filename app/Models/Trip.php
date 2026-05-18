@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Override;
 
 class Trip extends Model
 {
@@ -24,5 +25,17 @@ class Trip extends Model
     public function tickets(): HasMany
     {
         return $this->hasMany(Ticket::class);
+    }
+
+    /**
+     * 
+     */
+    #[Override]
+    protected function casts(): array
+    {
+        return [
+            'depart_time' => 'datetime:Y-m-d-H-i-s',
+            'arrival_time' => 'datetime:Y-m-d-H-i-s',
+        ];
     }
 }

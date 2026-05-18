@@ -14,4 +14,14 @@ class Station extends Model
     {
         return $this->hasMan(RouteStop::class);
     }
+
+    public function departingRoutes(): HasMany
+    {
+        return $this->hasMany(Route::class, 'depart_station');
+    }
+
+    public function arrivingRoutes(): HasMany
+    {
+        return $this->hasMany(Route::class, 'arrival_station');
+    }
 }
