@@ -37,7 +37,10 @@
                                 <span class="text-lg font-semibold">{{ substr($trip->route->departStation->address, 0, 20) }}</span>
                                 <div>Відбуєває о {{ $trip->depart_time->format('H:i') }}</div>
                             </div>
-                            <div class="hidden md:flex flex-1 mt-3 flex justify-between">
+                            <div class="hidden md:flex flex-1 mt-3 flex justify-between relative">
+                                <div class="absolute left-1/2 -translate-x-1/2 -translate-y-3/7 bg-white rounded-xl px-1 py-1 text-center">
+                                    <p>{{ date_diff($trip->depart_time, $trip->arrival_time, true)->format('%H:%I') }}</p>
+                                </div>
                                 <div class="w-[70%] mx-auto bg-black h-1 rounded-xl"></div>
                             </div>
                             <div class="align-left">

@@ -27,7 +27,7 @@
                 </li>
             </ul>
             
-            <ul class="flex space-x-2">
+            <ul class="flex space-x-3">
                 @auth
                     <li>
                         <a href="#">
@@ -41,20 +41,22 @@
                         <li>
                             <a href="{{ route('employees.show', auth()->user()->employee_id) }}">Робочий розклад</a>
                         </li>
-                    @elseif (auth()->user()->role === \App\Models\User::$role[1])
+                    @elseif (auth()->user()->role === \App\Models\User::$role[1] || \App\Models\User::$role[0])
                         <li>
-                            <a href="#">Робітники</a>
+                            <a href="{{ route('employees.index') }}">Робітники</a>
                         </li>
                         <li>
                             <a href="#">Рейси</a>
                         </li>
-                    @elseif (auth()->user()->role === \App\Models\User::$role[0])
                         <li>
-                            <a href="#">Робітники</a>
+                            <a href="#">Станції</a>
                         </li>
                         <li>
-                            <a href="#">Рейси</a>
+                            <a href="#">Потяги</a>
                         </li>
+                        <li>
+                            <a href="#">Вагони</a>
+                        </li>   
                     @endif
                     <li>
                         <form action="{{ route('auth.destroy') }}" method="POST">

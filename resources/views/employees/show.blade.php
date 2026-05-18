@@ -1,7 +1,7 @@
 <x-layout :$employee>
     <x-breadcrumbs class="mb-4" :links="['Рейси' => route('trips.index'), 'Робочий розклад' => '#']" />
 
-    @foreach ($employee->crew->assignments as $assignment)
+    @forelse ($employee->crew->assignments as $assignment)
         <x-card>
             <div class="grid grid-cols-3 justify-between">
                 <div class="grid grid-cols-2 justify-between w-full">
@@ -17,7 +17,7 @@
                 <div class="w-full text-center">
                     <h2 class="text-2xl">До відправки: <span class="font-bold">{{ $assignment->trip->depart_time->diffForHumans() }}</span></h2>
                     <p class="text-lg">Номер потягу - {{ $assignment->trip->train->train_number }}</p>
-                    <p>Час рейсу - {{ date_diff($assignment->trip->depart_time, $assignment->trip->arrival_time, true)->format('%H:%I:%I') }} </p>
+                    <p>Час рейсу - {{ date_diff($assignment->trip->depart_time, $assignment->trip->arrival_time, true)->format('%H:%I:%S') }} </p>
                 </div>
                 <div>
                     <h2 class="w-full text-center text-xl font-medium">Склад персоналу</h2>
@@ -30,5 +30,7 @@
                 </div>
             </div>
         </x-card>
-    @endforeach
+    @empty
+        <h1 class="text-4xl font-semibold text-center">На разі немає запланованих рейсів!</h1>
+    @endforelse 
 </x-layout>
