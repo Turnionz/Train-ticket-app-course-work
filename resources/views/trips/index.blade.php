@@ -12,10 +12,10 @@
                 <x-search-bar placeholder="Куди" name="to" type="text" class="text-lg"/>
             </div>
             <div class="flex-1 bg-white">
-                <x-search-bar name="dd/mm/yyyy" type="date" class="text-lg"/>
+                <x-search-bar name="date" type="date" class="text-lg"/>
             </div>
             <div class="flex-1">
-                <button class="bg-emerald-400 rounded-xl text-2xl p-2 font-semibold text-center w-full">Знайти</button>
+                <button class="cursor-pointer bg-emerald-300 rounded-xl text-2xl p-2 font-semibold text-center w-full hover:bg-emerald-400 hover:shadow-md">Знайти</button>
             </div>  
         </form>
     </div>

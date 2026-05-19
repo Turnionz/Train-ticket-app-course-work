@@ -12,10 +12,7 @@
                     <div>
                         <h3 class="text-lg font-semibold">{{ $employee->user->first_name }} {{ $employee->user->last_name }}</h3>
                         <p>
-                            {{ Str::ucfirst($employee->user->role) }}
-                            @if ($employee->user->role === 'employee')
-                                - {{ $employee->employee_type }}
-                            @endif
+                            {{ Str::ucfirst($employee->user->role) }} {{ $employee->employee_type ? ': ' . $employee->employee_type : '' }}
                         </p>
                     </div>
                     <div class="col-3">

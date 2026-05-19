@@ -294,6 +294,7 @@ class DatabaseSeeder extends Seeder
                     'seat_id' => $seat->id,
                     'departing_station' => $stops[$departIndex]->station_id,
                     'arriving_station' => $stops[$arrivalIndex]->station_id,
+                    'status' => Ticket::$status[1]
                 ]);
             }
         }

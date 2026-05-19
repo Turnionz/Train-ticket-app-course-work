@@ -2,18 +2,62 @@
     <x-breadcrumbs class="mb-4" :links="['Рейси' => route('trips.index'), 'Робочий розклад' => '#']" />
 
     @if (auth()->user()->role === \App\Models\User::$role[1] || \App\Models\User::$role[0])
-        <form action="{{ route('employees.destroy', $employee) }}" method="POST">
-            @csrf
-            @method('DELETE')
-            <button class="bg-red-500 rounded-lg text-lg font-semibold p-2 hover:bg-red-600 hover:shadow-md cursor-pointer mb-4">
-                    ВИДАЛИТИ АККАУНТ
-            </button>
-        </form>
+        <div class="flex mb-4 gap-4">
+            <form action="{{ route('employees.destroy', $employee) }}" method="POST">
+                @csrf
+                @method('DELETE')
+                <button class="bg-red-500 rounded-lg text-lg font-semibold p-2 hover:bg-red-600 hover:shadow-md cursor-pointer">
+                        ВИДАЛИТИ АККАУНТ
+                </button>
+            </form>
+
+            <livewire:overlay-form 
+                buttonName='Призначити бригаду' 
+                buttonStyle='bg-slate-300 rounded-lg text-lg font-semibold p-2 hover:bg-slate-400 hover:shadow-md cursor-pointer'
+                :searchValues="['search' => 'text', 'date' => 'date']"
+                :filters="[
+                    '\App\Models\Station' => ['address'],
+                    '\App\Models\Train' => ['train_number', 'id'],
+                    '\App\Models\Trip' => ['depart_time', 'train_id']
+                ]"
+                :whatRelationsToFind="[
+                    '\App\Models\Assignment' => ['trip', 'trip.train', 'trip.route.routeStops.station'],    
+                ]"
+                field='crew_id'
+                >
+                <h2 class="pt-2 pl-3 text-xl font-semibold">Додати до бригади</h2>
+                <form wire:submit.prevent="addCrew" class="flex flex-auto w-full gap-4 items-center p-2 mb-2">
+                    <div class="flex-1 bg-white">
+                        <x-search-bar placeholder="Номер бригади" name="crew" type="number" class="text-lg"/>
+                    </div>
+                    <div class="flex justify-center">
+                        <button type="submit" class="text-lg font-medium p-2 bg-teal-300 rounded-md hover:bg-teal-400 hover:shadow-md cursor-pointer">
+                            Додати
+                        </button>
+                    </div>
+                </form>
+            </livewire:overlay-form>
+        </div>
     @endif
+
+    <div class="left-0 mb-2 p-2">
+        <h1 class="text-2xl font-semibold">{{ $employee->user->first_name }} {{ $employee->user->last_name }}</h1>
+        <h2 class="text-xl">{{ Str::ucfirst($employee->user->role) }} {{ $employee->employee_type ? ': ' . $employee->employee_type : '' }}</h2>
+        <div>
+            <h3 class="text-lg font-medium">
+                @if ($employee->crew_id)
+                    Номер бригади - {{ $employee->crew_id }}
+                @else
+                    Робітник не призначен до бригади!
+                @endif
+            </h3>
+        </div>
+    </div>
 
     @if (optional($employee->crew)->assignments === null)
         <h1 class="text-4xl font-semibold text-center">На разі немає запланованих рейсів!</h1>
     @else
+        <h1 class="text-4xl font-semibold text-center m-2">Заплановані рейси</h1>
         @forelse ($employee->crew->assignments as $assignment)
         <x-card>
             <div class="grid grid-cols-3 justify-between">
@@ -47,4 +91,5 @@
         <h1 class="text-4xl font-semibold text-center">На разі немає запланованих рейсів!</h1>
     @endforelse 
     @endif
+    @livewireScripts
 </x-layout>
