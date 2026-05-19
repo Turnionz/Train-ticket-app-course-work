@@ -19,8 +19,14 @@
                         </p>
                     </div>
                     <div class="col-3">
-                        <h3 class="text-lg">Номер персоналу - {{ $employee->crew->id }} </h3>
-                        <h3 class="text-lg">Призначено рейсів - {{ $employee->crew->assignments->count() }} </h3>
+                        <h3 class="text-lg">Номер персоналу - {{ optional($employee->crew)->id ?? 'не призначено' }} </h3>
+                        <h3 class="text-lg">Призначено рейсів - 
+                            @if (optional($employee->crew)->assignments !== null)
+                                {{ $employee->crew->assignments->count() }}
+                            @else
+                                жодного
+                            @endif
+                        </h3>
                     </div>
                 </div>
             </a>

@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignIdFor(Crew::class)->constrained();
-            $table->enum('employee_type', Employee::$type)->default(Employee::$type[2]);
+            $table->foreignIdFor(Crew::class)->nullable()->constrained();
+            $table->enum('employee_type', Employee::$type)->nullable()->default(Employee::$type[2]);
 
             $table->timestamps();
         });

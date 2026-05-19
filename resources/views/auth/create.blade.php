@@ -33,7 +33,7 @@
                 </div>
             </div>
 
-            <button class="w-full bg-green-500 text-2xl font-semibold">Зареєструватися</button>
+            <button class="w-full bg-green-500 text-2xl font-semibold rounded-md">Зареєструватися</button>
         </form>
     </x-card>
 </x-layout>

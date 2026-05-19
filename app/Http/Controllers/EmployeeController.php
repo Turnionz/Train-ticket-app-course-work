@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Testing\Fluent\Concerns\Has;
 
 class EmployeeController extends Controller
 {
@@ -23,7 +26,7 @@ class EmployeeController extends Controller
      */
     public function create()
     {
-        //
+        return view('employees.create');
     }
 
     /**
@@ -31,7 +34,28 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'email' => 'required|email',
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'role' => 'required',
+            'type' => 'nullable',
+            'password' => 'required'
+        ]);
+
+        $employee = Employee::create([
+            'employee_type' => $request->type
+        ]);
+
+        $employee->user()->create([
+            'email' => $request->email,
+            'first_name' => $request->first_name,
+            'last_name' => $request->last_name,
+            'password' => Hash::make($request->password),
+            'role' => User::$role[array_search($request->role, User::$role)]
+        ]);
+
+        return redirect()->route('employees.show', $employee);
     }
 
     /**
@@ -70,8 +94,12 @@ class EmployeeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Employee $employee)
     {
-        //
+
+        $employee->user->delete();
+        $employee->delete();
+
+        return redirect()->route('employees.index');
     }
 }
