@@ -12,6 +12,8 @@ class Trip extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['depart_time', 'arrival_time'];
+
     public function train(): BelongsTo
     {
         return $this->belongsTo(Train::class);

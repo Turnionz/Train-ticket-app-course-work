@@ -10,6 +10,8 @@ class RouteStop extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['order', 'stop_time', 'travel_time_to_next_station'];
+
     public function route(): BelongsTo
     {
         return $this->belongsTo(Route::class);

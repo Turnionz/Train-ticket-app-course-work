@@ -10,6 +10,8 @@ class Assignment extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['trip_id', 'crew_id'];
+
     public function crew(): BelongsTo
     {
         return $this->belongsTo(Crew::class);

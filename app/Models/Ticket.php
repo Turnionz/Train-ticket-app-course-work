@@ -10,6 +10,10 @@ class Ticket extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['status'];
+
+    public static array $status = ['reserved', 'booked', 'refunded', 'expired'];
+
     public function seat(): BelongsTo
     {
         return $this->belongsTo(Seat::class);

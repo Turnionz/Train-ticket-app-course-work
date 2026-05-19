@@ -5,7 +5,7 @@
         <form action="{{ route('employees.destroy', $employee) }}" method="POST">
             @csrf
             @method('DELETE')
-            <button class="bg-red-500 rounded-lg text-lg font-semibold p-2 hover:bg-red-600 hover:shadow-md cursor-pointer">
+            <button class="bg-red-500 rounded-lg text-lg font-semibold p-2 hover:bg-red-600 hover:shadow-md cursor-pointer mb-4">
                     ВИДАЛИТИ АККАУНТ
             </button>
         </form>

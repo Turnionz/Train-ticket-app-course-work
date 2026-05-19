@@ -11,6 +11,8 @@ class Train extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['train_number', 'type'];
+
     public static array $type = ['Інтерсіті', 'Пасажирський', 'Регіональний', 'Нічний'];
 
     public function wagons(): HasMany

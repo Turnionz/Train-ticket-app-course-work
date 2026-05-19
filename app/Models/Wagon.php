@@ -11,6 +11,8 @@ class Wagon extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['wagon_number', 'type', 'layout_map'];
+
     public static array $type = ['Сидячий', 'Купейний', 'Плацкартний', 'Люкс'];
 
     public static array $presets = [

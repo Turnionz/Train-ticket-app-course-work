@@ -10,6 +10,8 @@ class Seat extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['class'];
+
     public static array $class = ['1-й клас', '2-й клас', '3-й клас', 'Спляче', 'Люкс'];
 
     public function wagon(): BelongsTo

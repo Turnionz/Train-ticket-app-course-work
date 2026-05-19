@@ -10,6 +10,8 @@ class Station extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['address', 'capacity'];
+
     public function routeStops(): HasMany
     {
         return $this->hasMan(RouteStop::class);
