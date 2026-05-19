@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CrewController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\TrainController;
 use App\Http\Controllers\TripController;
@@ -21,3 +22,5 @@ Route::delete('logout', fn() => to_route('auth.destroy'))->name('logout');
 Route::delete('auth', [AuthController::class, 'destroy'])->name('auth.destroy');
 
 Route::resource('employees', EmployeeController::class);
+
+Route::resource('crews', CrewController::class);

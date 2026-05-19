@@ -116,7 +116,7 @@ new class extends Component
 
     <div class="{{ $hidden }} fixed inset-0 w-full h-full bg-black/25 z-50 flex items-center justify-center" wire:click="hide">
         <x-card x-on:click.stop='' class="max-w-[60%]">
-            @if ($searchValues !== null)
+            @if (!empty($searchValues))
                 <h2 class="pt-2 pl-3 text-xl font-semibold">Знайти за критеріями</h2>
                 <form wire:submit.prevent="search" class="flex flex-auto w-full gap-4 items-center p-2 mb-2">
                     @foreach ($searchValues as $searchName => $searchType)

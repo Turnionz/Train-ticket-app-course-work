@@ -11,7 +11,7 @@ class Employee extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['employee_type'];
+    protected $fillable = ['employee_type', 'crew_id'];
 
     public static array $type = ['Керувальник', 'Борт-Провідник', 'Машиніст', 'Механік'];
 

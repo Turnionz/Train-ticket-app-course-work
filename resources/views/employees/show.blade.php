@@ -26,9 +26,11 @@
                 field='crew_id'
                 >
                 <h2 class="pt-2 pl-3 text-xl font-semibold">Додати до бригади</h2>
-                <form wire:submit.prevent="addCrew" class="flex flex-auto w-full gap-4 items-center p-2 mb-2">
+                <form action="{{ route('employees.update', $employee) }}" method="POST" class="flex flex-auto w-full gap-4 items-center p-2 mb-2">
+                    @csrf
+                    @method('PUT')
                     <div class="flex-1 bg-white">
-                        <x-search-bar placeholder="Номер бригади" name="crew" type="number" class="text-lg"/>
+                        <x-search-bar placeholder="Номер бригади" name="crew_id" type="number" class="text-lg"/>
                     </div>
                     <div class="flex justify-center">
                         <button type="submit" class="text-lg font-medium p-2 bg-teal-300 rounded-md hover:bg-teal-400 hover:shadow-md cursor-pointer">

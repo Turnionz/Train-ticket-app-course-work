@@ -46,6 +46,9 @@
                             <a href="{{ route('employees.index') }}">Робітники</a>
                         </li>
                         <li>
+                            <a href="{{ route('crews.index') }}">Бригади</a>
+                        </li>
+                        <li>
                             <a href="#">Рейси</a>
                         </li>
                         <li>
