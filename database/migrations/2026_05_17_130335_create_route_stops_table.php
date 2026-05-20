@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
 
             $table->foreignIdFor(Route::class)->constrained();
-            $table->foreignIdFor(Station::class)->constrained();
+            $table->foreignIdFor(Station::class)->constrained()->constrained('stations')->onDelete('cascade');
             $table->unsignedInteger('order');
             $table->time('stop_time');
 

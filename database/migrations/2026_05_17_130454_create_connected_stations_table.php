@@ -14,8 +14,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('connected_stations', function (Blueprint $table) {
-            $table->foreignIdFor(Station::class, 'station_a')->constrained('stations');
-            $table->foreignIdFor(Station::class, 'station_b')->constrained('stations');
+            $table->foreignIdFor(Station::class, 'station_a')->constrained('stations')->constrained('stations')->onDelete('cascade');
+            $table->foreignIdFor(Station::class, 'station_b')->constrained('stations')->constrained('stations')->onDelete('cascade');
             $table->timestamps();
 
             $table->unique(['station_a', 'station_b']);

@@ -44,7 +44,7 @@
             <a href="{{ route('wagons.show', $wagon) }}">
                 <div class="grid justify-items">
                     <div class="flex p-2 gap-2 justify-between">
-                        <h2 class="text-xl font-semibold "> {{ $wagon->wagon_number ? 'Номер потяга: ' . $wagon->wagon_number : 'Потяг не призначено' }}</h2>
+                        <h2 class="text-xl font-semibold "> {{ $wagon->wagon_number ? 'Номер вагону: ' . $wagon->wagon_number : 'Номер не призначено' }}</h2>
                         <h2 class="text-lg font-semibold">ІД вагона: {{ $wagon->id }}</h2>
                         <h2 class="text-lg font-medium">Тип: {{ $wagon->type }}</h2>
                         <p class="text-md font-medium">Кількість місць: {{ $wagon->seats->count() }}</p>

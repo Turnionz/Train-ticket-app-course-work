@@ -31,4 +31,5 @@ Route::resource('wagons', WagonController::class);
 
 Route::resource('stations', StationController::class);
 
+Route::delete('deregNeighbour/{station}', [StationController::class, 'deregisterNeighbour'])->name('deregNeighbour');
 Route::put('registerNeighbour/{station}', [StationController::class, 'registerNeighbour'])->name('registerNeighbour');

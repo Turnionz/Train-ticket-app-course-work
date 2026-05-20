@@ -22,8 +22,8 @@ return new class extends Migration
             $table->foreignIdFor(Seat::class)->constrained();
             $table->foreignIdFor(Passenger::class)->constrained();
             $table->foreignIdFor(Trip::class)->constrained();
-            $table->foreignIdFor(Station::class, 'departing_station')->constrained();
-            $table->foreignIdFor(Station::class, 'arriving_station')->constrained();
+            $table->foreignId('departing_station')->nullable()->constrained('stations')->onDelete('set null');
+            $table->foreignId('arriving_station')->nullable()->constrained('stations')->onDelete('set null');
             $table->enum('status', Ticket::$status);
 
             $table->timestamps();

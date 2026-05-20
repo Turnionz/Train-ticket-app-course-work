@@ -57,7 +57,7 @@ new class extends Component
                         create: false,
                         hidePlaceholder: true,
                         controlClass: 'text-lg rounded-md border border-slate-300 bg-emerald-100 px-4 py-3 shadow-sm focus:outline-none focus:border-transparent focus:ring-2 focus:ring-sky-500',
-                        controlInput: '<input class=\'!border-none !ring-0 !outline-none !shadow-none bg-transparent m-0 p-0\' />',
+                        controlInput: '<input class=\'!border-none !ring-0 !outline-none !shadow-none w-full bg-transparent m-0 p-0\' />',
                         dropdownClass: 'text-lg absolute z-50 w-full bg-emerald-100 border border-slate-200 shadow-lg rounded-md mt-1 overflow-hidden',
                         optionClass: 'px-4 py-2 bg-emerald-200 text-gray-900 cursor-pointer hover:!bg-emerald-100',
                         itemClass: 'item inline-block mr-2 text-gray-900'

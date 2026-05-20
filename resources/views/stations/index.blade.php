@@ -2,7 +2,7 @@
     <x-breadcrumbs class="mb-4" :links="['Рейси' => route('trips.index'), 'Станції' => '#']" />
 
     <div class="mb-4 flex justify-between items-center w-full">
-        <x-link-button href="#" class="bg-teal-400 hover:bg-teal-500 text-lg">
+        <x-link-button href="{{ route('stations.create') }}" class="bg-teal-400 hover:bg-teal-500 text-lg">
             Додати станцію
         </x-link-button>
     </div>

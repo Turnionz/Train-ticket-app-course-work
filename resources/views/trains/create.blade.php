@@ -12,11 +12,17 @@
         @method('POST')
         <div class="grid bg-emerald-100 gap-2 mt-2 rounded-md">
             <input type="text" name="train_number" placeholder="Номер потягу" class="rounded-md bg-teal-100 p-2 text-lg m-2 w-full focus:bg-teal-200">
+            @error('train_number')
+                <div class="text-red-500">{{ $message }}</div>
+            @enderror
             <select name="type" id="" class="rounded-md bg-teal-100 p-2 text-lg m-2 focus:bg-teal-200 hover:bg-teal-200">
                 @foreach (\App\Models\Train::$type as $field)
                     <option value="{{ $field }}" class="hover:bg-teal-200">{{ $field }}</option>
                 @endforeach
             </select>
+            @error('type')
+                <div class="text-red-500">{{ $message }}</div>
+            @enderror
         </div>
         <livewire:create-form 
             name="wagons"

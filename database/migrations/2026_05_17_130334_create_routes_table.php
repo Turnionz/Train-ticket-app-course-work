@@ -15,8 +15,8 @@ return new class extends Migration
         Schema::create('routes', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignIdFor(Station::class, 'depart_station')->constrained();
-            $table->foreignIdFor(Station::class, 'arrival_station')->constrained();
+            $table->foreignIdFor(Station::class, 'depart_station')->constrained()->constrained('stations')->onDelete('cascade');
+            $table->foreignIdFor(Station::class, 'arrival_station')->constrained()->constrained('stations')->onDelete('cascade');
 
             $table->timestamps();
         });
