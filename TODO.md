@@ -27,19 +27,19 @@
 > > - ### Station creation/editing (operator only)
 > >     > - General form
 > >     > - Assigning neighbouring stations
-> > - ### Train and wagon creation/editing (operator only)
-> >     > - Creating a train
-> >     > - Add abbility to make new wagons just for this train, transfering the user to wagon creation page
-> >     > - Wagon creation with dynamic seat allocation (add/remove row/column, set seat type etc.)
-> >     > - Should be able to create several wagons at once
-> >     > - Upon creation of new wagons, if user was sent to wagon creation page from train creation, send back to creating the train with automatical assigning of newly created wagons
+> > - ### ~Train and wagon creation/editing (operator only)~
+> >     > - ~Creating a train~
+> >     > - ~Add abbility to make new wagons just for this train, transfering the user to wagon creation page~
+> >     > - ~Wagon creation with dynamic seat allocation (add/remove row/column, set seat type etc.)~ no longer doing the row/column edit, no time for it
+> >     > - ~Should be able to create several wagons at once~
+> >     > - ~Upon creation of new wagons, if user was sent to wagon creation page from train creation, send back to creating the train with automatical assigning of newly created wagons~
 > > - ### Route creation/editing (operator only)
 > >     > - No same routes can be made
 > >     > - Must list the order of stations in creation
 > >     > - Time between stations must be defined as "at average speed of X kms" for further dynamic calculation of train travel time (So is basically a multiplier) OR must be able to just state time of travel at set speed
-> > - ### Employee registering/editing (operator only)
-> >     > - Only operator should be able to make new employee
-> >     > - No operator can create other operator, only admin can
+> > - ### ~Employee registering/editing (operator only)~
+> >     > - ~Only operator should be able to make new employee~
+> >     > - ~No operator can create other operator, only admin can~
 > > - ### Crew and assignment building/editing (operator only)
 > >     > - ~Crews must consist at least from 1 employee~
 > >     > - ~Assignments can be empty, so can exist before the trip~
