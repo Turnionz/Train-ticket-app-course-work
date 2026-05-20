@@ -1,7 +1,7 @@
 <x-layout>
     <x-breadcrumbs class="mb-4" :links="['Рейси' => route('trips.index'), 'Бригади' => '#']" />
 
-    <x-link-button href="{{ route('crews.create') }}" class="text-lg bg-green-300 hover:bg-green-400 hover:shadow-md mb-2">
+    <x-link-button href="{{ route('crews.create') }}" class="text-lg bg-teal-400 hover:bg-teal-500 hover:shadow-md mb-2">
         Додати нову бригаду
     </x-link-button> 
 

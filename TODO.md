@@ -7,6 +7,7 @@
 > > - ~Create factories~
 > > - ~Set up the seeder~
 > > - ~Create and run migrations~
+> > - BE SURE THAT YOU ACTUALLY GOT ALL THE RELATIONS RIGHT
 
 # Auth
 
@@ -30,7 +31,7 @@
 > > - ### ~Train and wagon creation/editing (operator only)~
 > >     > - ~Creating a train~
 > >     > - ~Add abbility to make new wagons just for this train, transfering the user to wagon creation page~
-> >     > - ~Wagon creation with dynamic seat allocation (add/remove row/column, set seat type etc.)~ no longer doing the row/column edit, no time for it
+> >     > - ~Wagon creation with dynamic seat allocation (add/remove row/column, set seat type etc.)~ no longer doing the row/column edit, no time for it, BUT the potential foundation for it is laid using JSON
 > >     > - ~Should be able to create several wagons at once~
 > >     > - ~Upon creation of new wagons, if user was sent to wagon creation page from train creation, send back to creating the train with automatical assigning of newly created wagons~
 > > - ### Route creation/editing (operator only)

@@ -79,7 +79,7 @@
                             <a href="{{ route('trains.index') }}">Потяги</a>
                         </li>
                         <li>
-                            <a href="#">Вагони</a>
+                            <a href="{{ route('wagons.index') }}">Вагони</a>
                         </li>   
                     @endif
                     <li>

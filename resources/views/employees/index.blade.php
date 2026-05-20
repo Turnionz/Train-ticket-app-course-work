@@ -1,7 +1,7 @@
 <x-layout>
     <x-breadcrumbs class="mb-4" :links="['Рейси' => route('trips.index'), 'Робітники' => '#']" />
 
-    <x-link-button href="{{ route('employees.create') }}" class="text-lg bg-green-300 hover:bg-green-400 hover:shadow-md">
+    <x-link-button href="{{ route('employees.create') }}" class="text-lg bg-teal-400 hover:bg-teal-500 hover:shadow-md">
         Додати нового робітника
     </x-link-button>
 

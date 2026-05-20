@@ -158,7 +158,7 @@
                 <x-search-bar type="password" name="password" />
             </div>
 
-            <button class="w-full bg-green-500 text-2xl font-semibold rounded-md">Зареєструвати</button>
+            <button class="w-full bg-teal-400 hover:bg-teal-500 text-2xl font-semibold rounded-md">Зареєструвати</button>
         </form>
     </x-card>
 </x-layout>

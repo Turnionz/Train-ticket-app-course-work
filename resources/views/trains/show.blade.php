@@ -17,11 +17,10 @@
             </form>
         </livewire:overlay-form>
 
-        <x-link-button href="{{ route('trains.edit', $train) }}" class="rounded-lg bg-sky-400 hover:bg-sky-500 text-lg hover:shadow-md h-full">
+        <x-link-button href="{{ route('trains.edit', $train) }}" class="rounded-lg bg-teal-400 hover:bg-teal-500 text-lg hover:shadow-md h-full">
             <h2>Додати вагони</h2>
         </x-link-button>
     </div>
-    
 
 
     @forelse ($train->wagons as $wagon)
@@ -51,7 +50,7 @@
                                         @if($currentSeat)
                                             <label class="relative flex items-center justify-center w-16 h-16">
                                                 <input type="checkbox" name="seat_ids[]" value="{{ $currentSeat->id }}" 
-                                                    @disabled($currentSeat->ticket)
+                                                    @disabled($currentSeat->ticket) onclick="return false;"
                                                     class="absolute inset-0 w-full h-full appearance-none rounded-md 
                                                             bg-green-500 hover:bg-green-400 checked:bg-blue-600 cursor-pointer 
                                                             disabled:bg-gray-400 disabled:cursor-not-allowed disabled:hover:bg-gray-400">

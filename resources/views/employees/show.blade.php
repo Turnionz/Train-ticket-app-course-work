@@ -1,7 +1,7 @@
 <x-layout :$employee>
     <x-breadcrumbs class="mb-4" :links="['Рейси' => route('trips.index'), 'Робочий розклад' => '#']" />
 
-    @if (auth()->user()->role === \App\Models\User::$role[1] || \App\Models\User::$role[0])
+    @if (auth()->user()->role === \App\Models\User::$role[1] || auth()->user()->role === \App\Models\User::$role[0])
         <div class="flex mb-4 gap-4">
             <livewire:overlay-form 
                 buttonName='Видалити аккаунт' 

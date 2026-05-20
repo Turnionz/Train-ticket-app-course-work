@@ -5,6 +5,7 @@ use App\Http\Controllers\CrewController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\TrainController;
 use App\Http\Controllers\TripController;
+use App\Http\Controllers\WagonController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', fn() => to_route('trips.index'));
@@ -24,3 +25,5 @@ Route::delete('auth', [AuthController::class, 'destroy'])->name('auth.destroy');
 Route::resource('employees', EmployeeController::class);
 
 Route::resource('crews', CrewController::class);
+
+Route::resource('wagons', WagonController::class);

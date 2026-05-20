@@ -30,6 +30,11 @@
                             <div>{{ $trip->train->type }}</div>
                         </div>
                     </div>
+                    <div>
+                        <h2 class="text-lg font-medium">Кількість вагонів: {{ $trip->train->wagons->count() }}</h2>
+                        <h2 class="text-lg font-medium">Кількість місць: {{ $trip->train->seats->count() }}</h2>
+                        <h2 class="text-lg font-medium">З них вільних: {{ $trip->train->seats->count() - \App\Models\Ticket::whereIn('seat_id', $trip->train->seats->pluck('id'))->count() }}</h2>
+                    </div>
                     <div class="justify-between w-full col-3">
                         <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 justify-between mt-1">
                             <div class="align-left">
