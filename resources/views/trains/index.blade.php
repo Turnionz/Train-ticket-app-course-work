@@ -1,6 +1,12 @@
 <x-layout>
     <x-breadcrumbs class="mb-4" :links="['Рейси' => route('trips.index'), 'Потяги' => '#']" />
 
+    <div class="mb-4 flex justify-between items-center w-full">
+        <x-link-button href="{{ route('trains.create') }}" class="rounded-lg bg-sky-400 hover:bg-sky-500 text-lg hover:shadow-md">
+            <h2>Створити потяг</h2>
+        </x-link-button>
+    </div>
+
     @forelse ($trains as $train)
         <x-card class="hover:shadow-md mt-4 rounded-xl">
             <a href="{{ route('trains.show', $train) }}">

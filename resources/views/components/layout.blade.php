@@ -70,7 +70,7 @@
                             <a href="{{ route('crews.index') }}">Бригади</a>
                         </li>
                         <li>
-                            <a href="#">Рейси</a>
+                            <a href="{{ route('trips.index') }}">Рейси</a>
                         </li>
                         <li>
                             <a href="#">Станції</a>
