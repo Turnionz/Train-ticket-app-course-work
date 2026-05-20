@@ -39,7 +39,7 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect()->intended('/');
+        return redirect()->intended('/')->with('success', "Ви успішно зареєструвалися");
     }
 
     public function showLogin()
@@ -64,9 +64,9 @@ class AuthController extends Controller
         $remember = $request->filled('remember');
 
         if (Auth::attempt($credentials, $remember)) {
-            return redirect()->intended('/');
+            return redirect()->intended('/')->with('success', 'Ви увійшли в аккаунт!');
         } else {
-            return redirect()->back()->with('error', 'Invalid credentials');
+            return redirect()->back()->with('error', 'Неправильні вхідні дані!');
         }
     }
 

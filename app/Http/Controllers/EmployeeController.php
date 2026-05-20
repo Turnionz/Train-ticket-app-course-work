@@ -55,7 +55,7 @@ class EmployeeController extends Controller
             'role' => User::$role[array_search($request->role, User::$role)]
         ]);
 
-        return redirect()->route('employees.show', $employee);
+        return redirect()->route('employees.show', $employee)->with('success', 'Працівника було створено успішно');
     }
 
     /**
@@ -87,12 +87,12 @@ class EmployeeController extends Controller
     {
         $validated = $request->validate([
             'crew_id' => 'integer',
-            'id' => 'in'
+            'id' => 'integer'
         ]);
 
         $employee->update($validated);
 
-        return redirect()->route('employees.show', $employee);
+        return redirect()->route('employees.show', $employee)->with('success', 'Дія була виконана успішно');
     }
 
     /**
@@ -104,6 +104,6 @@ class EmployeeController extends Controller
         $employee->user->delete();
         $employee->delete();
 
-        return redirect()->route('employees.index');
+        return redirect()->route('employees.index')->with('success', 'Працівник був видалений');
     }
 }

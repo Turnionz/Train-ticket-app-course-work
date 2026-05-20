@@ -34,9 +34,9 @@ class TrainController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Train $train)
     {
-        //
+        return view('trains.show', ['train' => $train->load('wagons')]);
     }
 
     /**
@@ -58,8 +58,13 @@ class TrainController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Train $train)
     {
-        //
+        foreach ($train->wagons as $wagon) {
+            $wagon->update(['train_id' => null, 'wagon_number' => null]);
+        }
+        $train->delete();
+
+        return redirect()->route('trains.index')->with('success', 'Дія була виконана успішно');
     }
 }

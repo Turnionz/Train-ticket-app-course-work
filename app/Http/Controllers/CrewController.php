@@ -74,7 +74,7 @@ class CrewController extends Controller
             }
         }
 
-        return redirect()->route('crews.show', $crew);
+        return redirect()->route('crews.show', $crew)->with('success', 'Бригада була створена');
     }
 
     /**
@@ -119,6 +119,6 @@ class CrewController extends Controller
         }
         $crew->delete();
 
-        return redirect()->route('crews.index');
+        return redirect()->route('crews.index')->with('success', 'Бригада була видалена');
     }
 }

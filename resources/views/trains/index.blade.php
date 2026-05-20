@@ -14,7 +14,7 @@
                     <div>
                         <h2 class="text-lg font-medium">Кількість вагонів: {{ $train->wagons->count() }}</h2>
                         <h2 class="text-lg font-medium">Кількість місць: {{ $train->seats->count() }}</h2>
-                        <h2 class="text-lg font-medium">З них вільних: {{ $train->seats->count() - \App\Models\Ticket::where('id', '=', $train->id)->count() }}</h2>
+                        <h2 class="text-lg font-medium">З них вільних: {{ $train->seats->count() - \App\Models\Ticket::whereIn('seat_id', $train->seats->pluck('id'))->count() }}</h2>
                     </div>
                     @php
                         $soonest = $train->trip

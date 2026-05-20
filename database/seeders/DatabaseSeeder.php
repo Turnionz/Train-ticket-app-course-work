@@ -57,6 +57,9 @@ class DatabaseSeeder extends Seeder
         $allSeatsToInsert = [];
         $now = now();
 
+        // 1. Fetch the JSON presets exactly ONCE before the loops start!
+        $wagonPresets = Wagon::getPresets();
+
         for ($i = 0; $i <= 55; $i++) {
             $wagonAmount = rand(2, 24);
             $trainType = $trainTypes[array_rand($trainTypes)];
@@ -72,13 +75,15 @@ class DatabaseSeeder extends Seeder
                 $allowedClasses = $wagonToSeatMap[$wagonType];
                 $wagonSeatClass = $allowedClasses[array_rand($allowedClasses)];
 
-                $layoutMap = Wagon::$presets[$wagonType];
+                // 2. Use the array we fetched from the JSON file
+                $layoutMap = $wagonPresets[$wagonType] ?? [];
 
                 $wagon = Wagon::factory()
                     ->for($train)
                     ->create([
+                        'wagon_number' => $w + 1,
                         'type' => $wagonType,
-                        'layout_map' => json_encode($layoutMap)
+                        'layout_map' => $layoutMap
                     ]);
 
                 $seatNumber = 1;
@@ -148,8 +153,6 @@ class DatabaseSeeder extends Seeder
             $currentStationId = $stationIds[array_rand($stationIds)];
             $visitedStations = [$currentStationId];
 
-            // Create the route with the starting station's integer ID 
-            // We use it for both temporarily to satisfy foreign key constraints if needed
             $route = Route::create([
                 'depart_station' => $currentStationId,
                 'arrival_station' => $currentStationId
@@ -183,7 +186,6 @@ class DatabaseSeeder extends Seeder
                 $actualStops++;
             }
 
-            // Update the route with the actual arrival station ID now that the path is complete
             $route->update([
                 'depart_station' => $visitedStations[0],
                 'arrival_station' => end($visitedStations)

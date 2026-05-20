@@ -11,41 +11,23 @@ class Wagon extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['wagon_number', 'type', 'layout_map'];
+    protected $fillable = ['train_id', 'wagon_number', 'type', 'layout_map'];
 
     public static array $type = ['Сидячий', 'Купейний', 'Плацкартний', 'Люкс'];
 
-    public static array $presets = [
-        'Сидячий' =>
-        [
-            ["seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat"],
-            ["seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat"],
-            [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
-            [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
-            ["seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat"],
-            ["seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat"],
-        ],
-        'Купейний' =>
-        [
-            ["seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat"],
-            ["seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat"],
-            [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
-            [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
-            ["seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat"],
-        ],
-        'Плацкартний' =>
-        [
-            ["seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat"],
-            ["seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat"],
-            [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null],
-        ],
-        'Люкс' =>
-        [
-            ["seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat", "seat"],
-            [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]
-        ],
-    ];
+    public static function getPresets(): array
+    {
+        // This finds: your-project-root/database/data/wagon_presets.json
+        $path = database_path('data/wagon_presets.json');
 
+        if (!file_exists($path)) {
+            // This will now throw a very clear error if the file is missing!
+            throw new \Exception("JSON file not found at: " . $path);
+        }
+
+        $jsonString = file_get_contents($path);
+        return json_decode($jsonString, true);
+    }
 
     public function train(): BelongsTo
     {
@@ -56,4 +38,8 @@ class Wagon extends Model
     {
         return $this->hasMany(Seat::class);
     }
+
+    protected $casts = [
+        'layout_map' => 'array',
+    ];
 }

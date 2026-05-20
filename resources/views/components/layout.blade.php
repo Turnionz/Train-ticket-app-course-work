@@ -20,6 +20,27 @@
         @endif
     </head>
 <body class="bg-slate-100 mx-auto mt-10 max-w-9/10">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    @if (session('success'))
+        <div x-data="{ show: true }" 
+            x-init="setTimeout(() => show = false, 3000)" 
+            x-show="show" 
+            x-transition.duration.500ms
+            class="fixed top-4 left-0 right-0 z-50 mx-auto w-[90%] max-w-lg p-4 bg-green-200 border-2 border-green-500 rounded-md shadow-lg text-center">
+            <p class="text-lg font-semibold text-green-900">{{ session('success') }}</p> 
+        </div>
+    @endif
+
+    @if (session('error'))
+        <div x-data="{ show: true }" 
+            x-init="setTimeout(() => show = false, 3000)" 
+            x-show="show" 
+            x-transition.duration.500ms
+            class="fixed top-4 left-0 right-0 z-50 mx-auto w-[90%] max-w-lg p-4 bg-red-200 border-2 border-red-500 rounded-md shadow-lg text-center">
+            <p class="text-lg font-semibold text-red-900">{{ session('error') }}</p> 
+        </div>
+    @endif
+    
     <nav class="mb-8 flex justify-between text-lg font-medium">
             <ul class="flex space-x-0-2">
                 <li>
