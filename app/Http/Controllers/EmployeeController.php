@@ -86,7 +86,8 @@ class EmployeeController extends Controller
     public function update(Employee $employee, Request $request)
     {
         $validated = $request->validate([
-            'crew_id' => 'integer'
+            'crew_id' => 'integer',
+            'id' => 'in'
         ]);
 
         $employee->update($validated);

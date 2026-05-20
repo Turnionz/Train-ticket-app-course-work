@@ -3,13 +3,20 @@
 
     @if (auth()->user()->role === \App\Models\User::$role[1] || \App\Models\User::$role[0])
         <div class="flex mb-4 gap-4">
-            <form action="{{ route('employees.destroy', $employee) }}" method="POST">
-                @csrf
-                @method('DELETE')
-                <button class="bg-red-500 rounded-lg text-lg font-semibold p-2 hover:bg-red-600 hover:shadow-md cursor-pointer">
-                        ВИДАЛИТИ АККАУНТ
-                </button>
-            </form>
+            <livewire:overlay-form 
+                buttonName='Видалити аккаунт' 
+                buttonStyle='bg-red-600 rounded-lg text-lg font-semibold p-2 hover:bg-red-500 hover:shadow-md cursor-pointer h-full w-full'>
+                <h2 class="text-4xl font-semibold">Точно видалити працівника?</h2>
+                <form action="{{ route('employees.destroy', $employee) }}" method="POST" class="flex flex-auto w-full gap-4 items-center p-2 mb-2">
+                    @csrf
+                    @method('DELETE')
+                    <div class="flex justify-center w-full">
+                        <button type="submit" class="text-4xl font-semibold p-5 bg-red-600 rounded-md hover:bg-red-700 hover:shadow-md cursor-pointer w-full h-full mt-2">
+                            Видалити аккаунт працівника
+                        </button>
+                    </div>
+                </form>
+            </livewire:overlay-form>
 
             <livewire:overlay-form 
                 buttonName='Призначити бригаду' 

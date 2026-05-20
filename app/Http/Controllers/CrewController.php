@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Assignment;
 use App\Models\Crew;
+use App\Models\Employee;
+use App\Models\Trip;
 use Illuminate\Http\Request;
 
 class CrewController extends Controller
@@ -26,7 +29,9 @@ class CrewController extends Controller
      */
     public function create()
     {
-        //
+        $tripsValid = Trip::where('depart_time', '>=', now())->doesntHave('assignment')->get();
+
+        return view('crews.create', ['employees' => Employee::all()->where('crew_id', '=', null), 'trips' => $tripsValid]);
     }
 
     /**
@@ -34,7 +39,42 @@ class CrewController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $rules = [];
+        $organizedData = [];
+
+        foreach ($request->except('_token') as $key => $value) {
+            if (str_contains($key, '-')) {
+
+                if ($value !== null && $value !== '') {
+                    [$name, $index] = explode('-', $key, 2);
+
+                    $rules[$key] = 'required|integer';
+                    $organizedData[$name][$index] = $value;
+                }
+            }
+        }
+
+
+        $request->validate($rules);
+
+        $crew = Crew::create();
+
+        if (isset($organizedData['employees'])) {
+            foreach ($organizedData['employees'] as $index => $selectedValue) {
+                Employee::where('id', $selectedValue)->update(['crew_id' => $crew->id]);
+            }
+        }
+
+        if (isset($organizedData['trips'])) {
+            foreach ($organizedData['trips'] as $index => $selectedValue) {
+                Assignment::create([
+                    'crew_id' => $crew->id,
+                    'trip_id' => $selectedValue
+                ]);
+            }
+        }
+
+        return redirect()->route('crews.show', $crew);
     }
 
     /**
