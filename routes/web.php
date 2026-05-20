@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CrewController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\StationController;
 use App\Http\Controllers\TrainController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\WagonController;
@@ -27,3 +28,7 @@ Route::resource('employees', EmployeeController::class);
 Route::resource('crews', CrewController::class);
 
 Route::resource('wagons', WagonController::class);
+
+Route::resource('stations', StationController::class);
+
+Route::put('registerNeighbour/{station}', [StationController::class, 'registerNeighbour'])->name('registerNeighbour');

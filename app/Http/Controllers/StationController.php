@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ConnectedStations;
+use App\Models\Station;
 use Illuminate\Http\Request;
 
 class StationController extends Controller
@@ -11,7 +13,7 @@ class StationController extends Controller
      */
     public function index()
     {
-        //
+        return view('stations.index', ['stations' => Station::paginate(100)]);
     }
 
     /**
@@ -33,9 +35,11 @@ class StationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Station $station)
     {
-        //
+        $station->load(['connectionsAsA.stationB', 'connectionsAsB.stationA']);
+
+        return view('stations.show', compact('station'));
     }
 
     /**
@@ -49,9 +53,31 @@ class StationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update() {}
+
+    public function registerNeighbour(Station $station, Request $request)
     {
-        //
+        $now = now();
+        $request = $request->validate([
+            'station_id' => 'required|integer'
+        ]);
+
+        if ($station->id < $request['station_id']) {
+            $station_a = $station->id;
+            $station_b = $request['station_id'];
+        } elseif ($station->id > $request['station_id']) {
+            $station_a = $request['station_id'];
+            $station_b = $station->id;
+        }
+
+        ConnectedStations::factory()->create([
+            'station_a' => $station_a,
+            'station_b' => $station_b,
+            'created_at' => $now,
+            'updated_at' => $now
+        ]);
+
+        return redirect()->route('stations.show', ['station' => $station])->with('success', 'Додано сусідню станцію!');
     }
 
     /**

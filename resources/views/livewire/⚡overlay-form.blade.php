@@ -4,6 +4,8 @@ use Livewire\Component;
 
 new class extends Component
 {
+    public $targetId = null;
+
     public $hidden = 'hidden';
 
     // key => value -> name => type
@@ -31,6 +33,9 @@ new class extends Component
 
     // what field you want to output from the whatRelationsToFind model
     public string $field;
+
+    // Set to false if you want the query to be only inside the tables you listed and not be cross checked with a third table
+    public bool $globalSearch = true;
 
     public function show(){
         $this->hidden = '';
@@ -67,44 +72,49 @@ new class extends Component
             $results[$modelName] = $query->get();
         }
 
-        foreach ($this->whatRelationsToFind as $targetModel => $relationsArray) {
+        if($this->globalSearch){
+            foreach ($this->whatRelationsToFind as $targetModel => $relationsArray) {
             
-            // Passing the entire relationsArray to eager load everything
-            $query = $targetModel::with($relationsArray);
+                // Passing the entire relationsArray to eager load everything
+                $query = $targetModel::with($relationsArray);
 
-            $query->where(function ($q) use ($relationsArray, $results) {
-                
-                foreach ($relationsArray as $relationPath) {
+                $query->where(function ($q) use ($relationsArray, $results) {
                     
-                    // Use whereHas to search deeply into the relationship
-                    $q->orWhereHas($relationPath, function ($subQuery) use ($results) {
+                    foreach ($relationsArray as $relationPath) {
                         
-                        // Getting the model name
-                        $relatedModel = $subQuery->getModel();
-                        $relatedModelName = class_basename($relatedModel);
-
-                        // Did our previous search find any matches for this model?
-                        if (isset($results[$relatedModelName]) && $results[$relatedModelName]->isNotEmpty()) {
+                        // Use whereHas to search deeply into the relationship
+                        $q->orWhereHas($relationPath, function ($subQuery) use ($results) {
                             
-                            // Get the primary key (usually 'id') and the matched IDs
-                            $primaryKey = $relatedModel->getKeyName();
-                            $tableName = $relatedModel->getTable();
-                            $ids = $results[$relatedModelName]->pluck($primaryKey);
-                            
-                            // Filter the relation by the IDs we found earlier
-                            $subQuery->whereIn("{$tableName}.{$primaryKey}", $ids);
-                        } else {
-                            // If no matches were found for this model, force the condition to fail
-                            $subQuery->whereRaw('1 = 0');
-                        }
-                    });
-                }
-            });
+                            // Getting the model name
+                            $relatedModel = $subQuery->getModel();
+                            $relatedModelName = class_basename($relatedModel);
 
-            // Store the final assignments (or other target models)
-            $targetModelName = class_basename($targetModel);
-            $this->intersections[$targetModelName] = $query->get();
+                            // Did our previous search find any matches for this model?
+                            if (isset($results[$relatedModelName]) && $results[$relatedModelName]->isNotEmpty()) {
+                                
+                                // Get the primary key (usually 'id') and the matched IDs
+                                $primaryKey = $relatedModel->getKeyName();
+                                $tableName = $relatedModel->getTable();
+                                $ids = $results[$relatedModelName]->pluck($primaryKey);
+                                
+                                // Filter the relation by the IDs we found earlier
+                                $subQuery->whereIn("{$tableName}.{$primaryKey}", $ids);
+                            } else {
+                                // If no matches were found for this model, force the condition to fail
+                                $subQuery->whereRaw('1 = 0');
+                            }
+                        });
+                    }
+                });
+
+                // Store the final assignments (or other target models)
+                $targetModelName = class_basename($targetModel);
+                $this->intersections[$targetModelName] = $query->get();
+            }
+        } else {
+            $this->intersections = $results;
         }
+        
     }
 };
 ?>
@@ -118,14 +128,14 @@ new class extends Component
         <x-card x-on:click.stop='' class="max-w-[60%]">
             @if (!empty($searchValues))
                 <h2 class="pt-2 pl-3 text-xl font-semibold">Знайти за критеріями</h2>
-                <form wire:submit.prevent="search" class="flex flex-auto w-full gap-4 items-center p-2 mb-2">
+                <form wire:submit.prevent="search" class="flex flex-row gap-2 w-full">
                     @foreach ($searchValues as $searchName => $searchType)
-                        <div class="bg-white">
-                            <x-search-bar class="text-lg" name="{{ $searchName }}" type="{{ $searchType }}" wire:model="inputValues.{{ $searchName }}" />
+                        <div class="flex-auto">
+                            <x-search-bar class="text-lg bg-teal-200 focus:bg-teal-300 border-transparent" name="{{ $searchName }}" type="{{ $searchType }}" wire:model="inputValues.{{ $searchName }}" />
                         </div>
                     @endforeach
-                    <div class="flex-1">
-                            <button type="submit" class="cursor-pointer bg-emerald-300 rounded-xl text-xl p-2 font-medium text-center w-content hover:bg-emerald-400 hover:shadow-md">
+                        <div>
+                            <button type="submit" class="cursor-pointer bg-emerald-300 rounded-xl text-xl p-2 font-medium text-center w-content hover:bg-emerald-400 hover:shadow-md w-full">
                                 Знайти
                             </button>
                         </div>  
@@ -136,7 +146,7 @@ new class extends Component
                     @else
                         @foreach ($intersections as $modelName => $records)
                             @foreach ($records as $record)
-                                 {{ $record->$field }}
+                                {{ $record->$field }}
                             @endforeach
                         @endforeach
                     @endif

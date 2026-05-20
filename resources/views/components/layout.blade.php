@@ -73,7 +73,7 @@
                             <a href="{{ route('trips.index') }}">Рейси</a>
                         </li>
                         <li>
-                            <a href="#">Станції</a>
+                            <a href="{{ route('stations.index') }}">Станції</a>
                         </li>
                         <li>
                             <a href="{{ route('trains.index') }}">Потяги</a>

@@ -20,7 +20,7 @@
 
             <livewire:overlay-form 
                 buttonName='Призначити бригаду' 
-                buttonStyle='bg-slate-300 rounded-lg text-lg font-semibold p-2 hover:bg-slate-400 hover:shadow-md cursor-pointer'
+                buttonStyle='bg-teal-300 rounded-lg text-lg font-semibold p-2 hover:bg-teal-400 hover:shadow-md cursor-pointer'
                 :searchValues="['search' => 'text', 'date' => 'date']"
                 :filters="[
                     '\App\Models\Station' => ['address'],

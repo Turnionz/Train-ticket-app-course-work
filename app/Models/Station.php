@@ -14,7 +14,7 @@ class Station extends Model
 
     public function routeStops(): HasMany
     {
-        return $this->hasMan(RouteStop::class);
+        return $this->hasMany(RouteStop::class);
     }
 
     public function departingRoutes(): HasMany
@@ -25,5 +25,23 @@ class Station extends Model
     public function arrivingRoutes(): HasMany
     {
         return $this->hasMany(Route::class, 'arrival_station');
+    }
+
+    public function connectionsAsA(): HasMany
+    {
+        return $this->hasMany(ConnectedStations::class, 'station_a');
+    }
+
+    public function connectionsAsB(): HasMany
+    {
+        return $this->hasMany(ConnectedStations::class, 'station_b');
+    }
+
+    public function getAllConnectedStationsAttribute()
+    {
+        $asA = $this->connectionsAsA->map->stationB;
+        $asB = $this->connectionsAsB->map->stationA;
+
+        return $asA->merge($asB)->unique('id');
     }
 }
