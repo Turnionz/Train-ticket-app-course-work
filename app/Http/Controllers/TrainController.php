@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Train;
+use App\Models\Wagon;
 use Illuminate\Http\Request;
 
 class TrainController extends Controller
@@ -42,17 +43,43 @@ class TrainController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Train $train)
     {
-        //
+        return view('trains.edit', ['train' => $train]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Train $train)
     {
-        //
+        $rules = [];
+        $organizedData = [];
+
+        foreach ($request->except('_token') as $key => $value) {
+            if (str_contains($key, '-')) {
+
+                if ($value !== null && $value !== '') {
+                    [$name, $index] = explode('-', $key, 2);
+
+                    $rules[$key] = 'required|integer';
+                    $organizedData[$name][$index] = $value;
+                }
+            }
+        }
+
+        $request->validate($rules);
+
+        $wagonsCount = $train->wagons->count() + 1;
+
+        if (isset($organizedData['wagons'])) {
+            foreach ($organizedData['wagons'] as $index => $selectedValue) {
+                Wagon::where('id', $selectedValue)->update(['train_id' => $train->id, 'wagon_number' => $wagonsCount]);
+                $wagonsCount++;
+            }
+        }
+
+        return redirect()->route('trains.show', $train)->with('success', 'Вагон(и) був(лм) додан(і)');
     }
 
     /**

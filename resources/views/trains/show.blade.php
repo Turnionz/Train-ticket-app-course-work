@@ -1,7 +1,7 @@
 <x-layout>
     <x-breadcrumbs class="mb-4" :links="['Рейси' => route('trips.index'), 'Потяги' => route('trains.index'), 'Потяг №' . $train->id => '#' ]" />
 
-    <div class="mb-4 flex gap-4">
+    <div class="mb-4 flex justify-between items-center w-full">
         <livewire:overlay-form 
             buttonName='Видалити потяг' 
             buttonStyle='bg-red-600 rounded-lg text-lg font-semibold p-2 hover:bg-red-500 hover:shadow-md cursor-pointer h-full w-full'>
@@ -16,6 +16,10 @@
                 </div>
             </form>
         </livewire:overlay-form>
+
+        <x-link-button href="{{ route('trains.edit', $train) }}" class="rounded-lg bg-sky-400 hover:bg-sky-500 text-lg hover:shadow-md h-full">
+            <h2>Додати вагони</h2>
+        </x-link-button>
     </div>
     
 

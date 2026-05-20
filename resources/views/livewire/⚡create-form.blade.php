@@ -14,6 +14,7 @@ new class extends Component
     public array $load;
     public $validValues;
 
+    // should be exactly like the relation of the parent model
     public string $name;
 
     public function addOption()
