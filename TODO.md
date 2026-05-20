@@ -41,8 +41,8 @@
 > >     > - Only operator should be able to make new employee
 > >     > - No operator can create other operator, only admin can
 > > - ### Crew and assignment building/editing (operator only)
-> >     > - Crews must consist at least from 1 employee
-> >     > - Assignments can be empty, so can exist before the trip
+> >     > - ~Crews must consist at least from 1 employee~
+> >     > - ~Assignments can be empty, so can exist before the trip~
 > > - ### Trip creation/editing (operator only)
 > >     > - Train availabilty error
 > >     > - Crew assignment at creation (with availability error)

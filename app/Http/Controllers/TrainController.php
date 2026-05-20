@@ -12,7 +12,7 @@ class TrainController extends Controller
      */
     public function index()
     {
-        return view('trains.index', ['trains' => Train::with('trip')->paginate(15)]);
+        return view('trains.index', ['trains' => Train::with(['trip', 'wagons', 'seats'])->paginate(15)]);
     }
 
     /**

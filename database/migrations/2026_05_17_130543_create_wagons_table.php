@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('wagons', function (Blueprint $table) {
             $table->id();
 
-            $table->foreignIdFor(Train::class)->constrained();
+            $table->foreignIdFor(Train::class)->nullable()->constrained();
             $table->integer('wagon_number')->nullable();
             $table->enum('type', Wagon::$type);
             $table->json('layout_map');

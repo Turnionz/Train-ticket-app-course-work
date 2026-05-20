@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Train extends Model
 {
@@ -20,8 +19,13 @@ class Train extends Model
         return $this->hasMany(Wagon::class);
     }
 
-    public function trip(): HasOne
+    public function trip(): HasMany
     {
-        return $this->hasOne(Trip::class);
+        return $this->hasMany(Trip::class);
+    }
+
+    public function seats()
+    {
+        return $this->hasManyThrough(Seat::class, Wagon::class);
     }
 }

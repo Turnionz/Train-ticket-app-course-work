@@ -74,7 +74,7 @@
                     buttonName='Видалити бригаду' 
                     buttonStyle='bg-red-600 rounded-lg text-3xl font-semibold p-2 hover:bg-red-500 hover:shadow-md cursor-pointer h-full w-full'>
                     <h2 class="text-4xl font-semibold">Точно видалити бригаду?</h2>
-                    <form action="#" method="POST" class="flex flex-auto w-full gap-4 items-center p-2 mb-2">
+                    <form action="{{ route('crews.destroy', $crew) }}" method="POST" class="flex flex-auto w-full gap-4 items-center p-2 mb-2">
                         @csrf
                         @method('DELETE')
                         <div class="flex justify-center w-full">

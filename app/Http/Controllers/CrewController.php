@@ -112,8 +112,13 @@ class CrewController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Crew $crew)
     {
-        //
+        foreach ($crew->employees as $employee) {
+            $employee->update(['crew_id' => null]);
+        }
+        $crew->delete();
+
+        return redirect()->route('crews.index');
     }
 }

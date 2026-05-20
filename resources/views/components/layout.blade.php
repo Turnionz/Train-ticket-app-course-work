@@ -55,7 +55,7 @@
                             <a href="#">Станції</a>
                         </li>
                         <li>
-                            <a href="#">Потяги</a>
+                            <a href="{{ route('trains.index') }}">Потяги</a>
                         </li>
                         <li>
                             <a href="#">Вагони</a>
