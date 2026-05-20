@@ -16,6 +16,25 @@
                 </div>
             </form>
         </livewire:overlay-form>
+        <livewire:overlay-form 
+            buttonName='Редагувати вагон' 
+            buttonStyle='bg-teal-400 rounded-lg text-lg font-semibold p-2 hover:bg-teal-500 hover:shadow-md cursor-pointer h-full w-full'>
+            <h2 class="text-4xl font-semibold text-center">Редагування</h2>
+            <form action="{{ route('wagons.update', $wagon) }}" method="POST" class="flex flex-auto w-full gap-4 items-center p-2 mb-2">
+                @csrf
+                @method('PUT')
+                <div class="grid gap-2 mt-2 justify-center">
+                    <div class="">
+                        <input name="train_number" type="number" class="rounded-md bg-teal-100 p-2 text-lg mt--2 w-full focus:bg-teal-200" placeholder="Номер вагона" value="{{ $wagon->train->train_number }}">
+                    </div>
+                    <div>
+                        <button type="submit" class="text-xl font-semibold p-2 bg-teal-400 rounded-md hover:bg-teal-500 hover:shadow-md cursor-pointer w-full h-full mt-5">
+                            Редагувати вагон
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </livewire:overlay-form>
     </div>
     
 

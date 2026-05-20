@@ -10,7 +10,7 @@
                 @csrf
                 <div class="grid gap-2 mt-2">
                     <div>
-                        <input name="amount" type="number" class="rounded-md bg-teal-100 p-2 text-lg m-2 w-full focus:bg-teal-200" placeholder="Кількість вагонів">
+                        <input name="amount" type="number" class="rounded-md bg-teal-100 p-2 text-lg mt-2 w-full focus:bg-teal-200" placeholder="Кількість вагонів">
                     </div>
                     <div>
                         <select name="type_select" id="" class="bg-teal-100 p-2 rounded-md w-full text-lg m-2 focus:bg-teal-200 hover:bg-teal-200">

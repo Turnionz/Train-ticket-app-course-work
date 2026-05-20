@@ -86,13 +86,26 @@
                     <p>Час рейсу - {{ date_diff($assignment->trip->depart_time, $assignment->trip->arrival_time, true)->format('%H:%I:%S') }} </p>
                 </div>
                 <div>
-                    <h2 class="w-full text-center text-xl font-medium">Склад персоналу</h2>
-                    <div class="w-full text-center text-md">
-                        @foreach ($assignment->crew->employees as $crewEmployee)
-                            <p>{{ $crewEmployee->user->first_name }} {{ $crewEmployee->user->last_name }} - 
-                                <span class="font-medium">{{ $crewEmployee->employee_type }}</span> </p>
-                        @endforeach
-                    </div>
+                    @if (auth()->user()->role === \App\Models\User::$role[1] || auth()->user()->role === \App\Models\User::$role[0])
+                        <a href="{{ route('crews.show', $assignment->crew) }}">
+                            <h2 class="w-full text-center text-xl font-medium">Склад персоналу</h2>
+                            <div class="w-full text-center text-md">
+                                @foreach ($assignment->crew->employees as $crewEmployee)
+                                    <p>{{ $crewEmployee->user->first_name }} {{ $crewEmployee->user->last_name }} - 
+                                        <span class="font-medium">{{ $crewEmployee->employee_type }}</span> </p>
+                                @endforeach
+                            </div>
+                        </a>
+                    @else
+                        <h2 class="w-full text-center text-xl font-medium">Склад персоналу</h2>
+                        <div class="w-full text-center text-md">
+                            @foreach ($assignment->crew->employees as $crewEmployee)
+                                <p>{{ $crewEmployee->user->first_name }} {{ $crewEmployee->user->last_name }} - 
+                                    <span class="font-medium">{{ $crewEmployee->employee_type }}</span> </p>
+                            @endforeach
+                        </div>
+                    @endif
+                    
                 </div>
             </div>
         </x-card>

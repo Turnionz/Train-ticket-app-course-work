@@ -125,9 +125,24 @@ class WagonController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Wagon $wagon)
     {
-        //
+        $request = $request->validate([
+            'train_number' => 'nullable|integer'
+        ]);
+
+        if ($request['train_number'] === null) {
+            $wagon->update(['train_id' => null]);
+        } else {
+            $train = Train::where('train_number', '=', $request['train_number'])->first();
+        }
+
+        if ($train) {
+            $wagon->update(['train_id' => $train->id]);
+            return redirect()->route('wagons.show', $wagon)->with('success', 'Вагон редаговано');
+        } else {
+            return redirect()->route('wagons.show', $wagon)->with('error', 'Потяга з таким номером немає!');
+        }
     }
 
     /**
