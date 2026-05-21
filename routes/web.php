@@ -21,13 +21,16 @@ Route::middleware('guest')->group(function () {
     Route::post('register', [AuthController::class, 'store'])->name('auth.register');
 });
 
+Route::get('/trips', [TripController::class, 'index'])->name('trips.index');
+Route::get('/trips/{trip}', [TripController::class, 'show'])->name('trips.show');
+
 Route::middleware('auth')->group(function () {
 
     Route::delete('logout', [AuthController::class, 'destroy'])->name('logout');
     Route::delete('auth', [AuthController::class, 'destroy'])->name('auth.destroy');
 
     Route::resource('trains', TrainController::class);
-    Route::resource('trips', TripController::class);
+    Route::resource('trips', TripController::class)->except(['index', 'show']);
     Route::resource('employees', EmployeeController::class);
     Route::resource('crews', CrewController::class);
     Route::resource('wagons', WagonController::class);
