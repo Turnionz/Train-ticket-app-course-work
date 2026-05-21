@@ -2,21 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Trip;
+use App\Models\Route;
+use App\Models\Station;
 use Illuminate\Http\Request;
 
-class TripController extends Controller
+class RouteController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view('trips.index', ['trips' => Trip::with(
-            'train',
-            'route.departStation',
-            'route.arrivalStation'
-        )->paginate(15)]);
+        return view('routes.index', ['routes' => Route::paginate(15)]);
     }
 
     /**
@@ -24,7 +21,9 @@ class TripController extends Controller
      */
     public function create()
     {
-        //
+        $stations = Station::with(['connectionsAsA.stationB', 'connectionsAsB.stationA'])->get();
+
+        return view('routes.create', compact('stations'));
     }
 
     /**
@@ -32,20 +31,15 @@ class TripController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
-        return redirect()->route('tickets.view')->with('success', 'Ви купили квитки');
+        //
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Trip $trip)
+    public function show(string $id)
     {
-        return view('trips.show', ['trip' => $trip->load([
-            'train',
-            'route.departStation',
-            'route.arrivalStation'
-        ])]);
+        //
     }
 
     /**

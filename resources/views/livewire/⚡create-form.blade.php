@@ -14,6 +14,8 @@ new class extends Component
     public array $load;
     public $validValues;
 
+    public bool $button ;
+
     // should be exactly like the relation of the parent model
     public string $name;
 

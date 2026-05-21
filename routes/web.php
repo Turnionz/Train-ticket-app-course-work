@@ -3,7 +3,9 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CrewController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\RouteController;
 use App\Http\Controllers\StationController;
+use App\Http\Controllers\TicketController;
 use App\Http\Controllers\TrainController;
 use App\Http\Controllers\TripController;
 use App\Http\Controllers\WagonController;
@@ -30,6 +32,12 @@ Route::resource('crews', CrewController::class);
 Route::resource('wagons', WagonController::class);
 
 Route::resource('stations', StationController::class);
+
+Route::resource('routes', RouteController::class);
+
+Route::post('/trips/{trip}/buy', [TicketController::class, 'buy'])->name('trips.buy');
+Route::post('/trips/payment', [TicketController::class, 'store'])->name('trips.payment');
+
 
 Route::delete('deregNeighbour/{station}', [StationController::class, 'deregisterNeighbour'])->name('deregNeighbour');
 Route::put('registerNeighbour/{station}', [StationController::class, 'registerNeighbour'])->name('registerNeighbour');

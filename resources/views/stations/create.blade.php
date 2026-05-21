@@ -35,7 +35,7 @@
             :load="['id', 'address']" /> 
             
         </form>
-        <div type="submit" class="flex justify-center">
+        <div class="flex justify-center">
                 <button type="submit" form="station-form" class="text-2xl font-bold p-2 bg-teal-300 rounded-md hover:bg-teal-400 hover:shadow-md cursor-pointer">
                     Створити станцію
                 </button>
