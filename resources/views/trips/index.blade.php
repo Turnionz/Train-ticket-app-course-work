@@ -20,6 +20,14 @@
             </form>
         </div>
     
+    @can('operator-level')
+        <div class="mb-4 w-full">
+            <x-link-button href="{{ route('trips.create') }}" class="w-full block text-center py-3 rounded text-2xl bg-teal-400 hover:bg-teal-500 hover:shadow-md transition">
+                Створити рейс
+            </x-link-button>
+        </div>
+    @endcan
+
     @foreach ($trips as $trip)
         <x-card class="hover:shadow-md mt-4 rounded-xl">
             <a href="{{ route('trips.show', $trip) }}">

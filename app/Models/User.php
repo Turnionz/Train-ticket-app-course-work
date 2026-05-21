@@ -53,11 +53,6 @@ class User extends Authenticatable
         ];
     }
 
-    // public function passengers(): HasMany
-    // {
-    //     return $this->hasMany(Passenger::class);
-    // }
-
     public function employee(): BelongsTo
     {
         return $this->belongsTo(Employee::class);

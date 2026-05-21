@@ -22,7 +22,8 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::get('/trips', [TripController::class, 'index'])->name('trips.index');
-Route::get('/trips/{trip}', [TripController::class, 'show'])->name('trips.show');
+Route::post('/trips/create', [TripController::class, 'tripCreate'])->name('trips.tripCreate');
+Route::get('/trips/{trip}', [TripController::class, 'show'])->name('trips.show')->whereNumber('trip');
 
 Route::middleware('auth')->group(function () {
 

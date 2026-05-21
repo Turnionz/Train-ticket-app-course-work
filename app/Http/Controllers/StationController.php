@@ -152,7 +152,7 @@ class StationController extends Controller
         }
     }
 
-    protected static function attachNeighbour(Station $station, Request|array $request)
+    private static function attachNeighbour(Station $station, Request|array $request)
     {
         if (is_array($request)) {
             foreach ($request as $key => $value) {

@@ -13,7 +13,12 @@ class Trip extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['depart_time', 'arrival_time'];
+    protected $fillable = ['train_id', 'route_id', 'depart_time', 'arrival_time'];
+
+    protected $casts = [
+        'depart_time' => 'datetime',
+        'arrival_time' => 'datetime',
+    ];
 
     public function train(): BelongsTo
     {
