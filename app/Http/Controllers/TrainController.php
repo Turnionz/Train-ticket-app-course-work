@@ -36,11 +36,9 @@ class TrainController extends Controller
 
         $organizedData = [];
 
-        // Organize and validate data   
         foreach ($request->except(['_token', '_method', 'train_number', 'type']) as $key => $value) {
             if (str_contains($key, '-')) {
                 if ($value !== null && $value !== '') {
-                    // Splits keys like 'wagonAlt-0' into 'wagonAlt' and '0'
                     [$name, $index] = explode('-', $key, 2);
 
                     $rules[$key] = 'required';
@@ -52,7 +50,6 @@ class TrainController extends Controller
         $request->validate($rules);
 
         $train = Train::create([
-            // If type comes through as an array (from some selects), grab the first item, otherwise use it directly
             'type' => is_array($request->type) ? $request->type[0] : $request->type,
             'train_number' => $request->input('train_number')
         ]);
@@ -62,7 +59,6 @@ class TrainController extends Controller
         $allSeatsToInsert = [];
         $now = now();
 
-        // Attach Existing Wagons 
         if (!empty($organizedData['wagons'])) {
             foreach ($organizedData['wagons'] as $index => $wagonId) {
                 $wagonsCount++;
@@ -74,18 +70,14 @@ class TrainController extends Controller
             }
         }
 
-        // Create new wasgons
         if (!empty($organizedData['wagonAlt'])) {
             foreach ($organizedData['wagonAlt'] as $index => $countToCreate) {
 
-                // Extract the matching type and seat class for this specific row index
                 $wagonType = $organizedData['wagon'][$index] ?? 'Standard';
                 $wagonSeatClass = $organizedData['seat'][$index] ?? 'Standard';
 
-                // Get the specific layout for this wagon type
                 $layoutMap = $wagonPresets[$wagonType] ?? [];
 
-                // Loop to create the requested number of identical wagons
                 for ($i = 0; $i < $countToCreate; $i++) {
                     $wagonsCount++;
 
@@ -99,7 +91,6 @@ class TrainController extends Controller
 
                     $seatNumber = 1;
 
-                    // Loop through the layout map to generate seats for this specific wagon
                     foreach ($layoutMap as $row) {
                         foreach ($row as $cell) {
                             if ($cell === 'seat') {

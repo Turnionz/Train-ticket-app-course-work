@@ -2,23 +2,23 @@
 
     <x-breadcrumbs class="mb-4" :links="['Рейси' => '#']" />
         
-    <div class="mb-2 bg-teal-200 rounded-lg pb-1">
-        <h2 class="pt-2 pl-3 text-3xl font-semibold">Знайти білет</h2>
-        <form action="" class="flex flex-auto w-full gap-4 items-center p-2">
-            <div class="flex-1 bg-white">
-                <x-search-bar placeholder="Звідки" name="from" type="text" class="text-lg"/>
-            </div>
-            <div class="flex-1 bg-white">
-                <x-search-bar placeholder="Куди" name="to" type="text" class="text-lg"/>
-            </div>
-            <div class="flex-1 bg-white">
-                <x-search-bar name="date" type="date" class="text-lg"/>
-            </div>
-            <div class="flex-1">
-                <button class="cursor-pointer bg-emerald-300 rounded-xl text-2xl p-2 font-semibold text-center w-full hover:bg-emerald-400 hover:shadow-md">Знайти</button>
-            </div>  
-        </form>
-    </div>
+        <div class="mb-2 bg-teal-200 rounded-lg pb-1">
+            <h2 class="pt-2 pl-3 text-3xl font-semibold">Знайти білет</h2>
+            <form action="{{ route('trips.index') }}" method="GET" class="flex flex-auto w-full gap-4 items-center p-2">
+                <div class="flex-1 bg-white">
+                    <x-search-bar placeholder="Звідки" name="from" type="text" class="text-lg"/>
+                </div>
+                <div class="flex-1 bg-white">
+                    <x-search-bar placeholder="Куди" name="to" type="text" class="text-lg"/>
+                </div>
+                <div class="flex-1 bg-white">
+                    <x-search-bar name="date" type="date" class="text-lg"/>
+                </div>
+                <div class="flex-1">
+                    <button class="cursor-pointer bg-emerald-300 rounded-xl text-2xl p-2 font-semibold text-center w-full hover:bg-emerald-400 hover:shadow-md">Знайти</button>
+                </div>  
+            </form>
+        </div>
     
     @foreach ($trips as $trip)
         <x-card class="hover:shadow-md mt-4 rounded-xl">

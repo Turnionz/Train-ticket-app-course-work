@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ticket;
 use App\Models\Trip;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class TicketController extends Controller
@@ -12,7 +14,10 @@ class TicketController extends Controller
      */
     public function index()
     {
-        //
+        $user = auth()->user();
+        $tickets = $user->tickets;
+
+        return view('tickets.index', ['tickets' => $tickets]);
     }
 
     /**
@@ -23,29 +28,56 @@ class TicketController extends Controller
         //
     }
 
-    public function buy(Request $request, Trip $trip)
+    public function buy(Request $request)
     {
-        // Validate that at least one seat was selected
+        // 1. Валідація даних
         $validated = $request->validate([
+            'trip_id' => 'required|exists:trips,id',
             'seat_ids' => 'required|array|min:1',
             'seat_ids.*' => 'exists:seats,id',
         ], [
             'seat_ids.required' => 'Будь ласка, оберіть хоча б одне місце.',
         ]);
 
-        // return dd($validated);
+        $tripId = $validated['trip_id'];
+        $seatIds = $validated['seat_ids'];
 
-        // Here you would add your logic to:
-        // 1. Verify the seats aren't already taken by someone else 
-        // 2. Calculate the total price
-        // 3. Create the tickets or redirect to a payment page
+        $departStations = [];
+        foreach ($request->input('depart', []) as $key => $value) {
+            $cleanKey = preg_replace('/[^0-9]/', '', $key);
+            $departStations[$cleanKey] = $value;
+        }
 
-        // Example redirect to checkout:
-        // return redirect()->route('checkout.index', ['seats' => $request->seat_ids]);
-        $tickets = $request->input('seat_ids');
 
-        // Передаємо у вид
-        return view('trips.payment', compact('tickets'));
+        $arriveStations = [];
+        foreach ($request->input('arrive', []) as $key => $value) {
+            $cleanKey = preg_replace('/[^0-9]/', '', $key);
+            $arriveStations[$cleanKey] = $value;
+        }
+
+        $createdTickets = [];
+
+
+        foreach ($seatIds as $seatId) {
+
+            $depart = $departStations[$seatId] ?? null;
+            $arrive = $arriveStations[$seatId] ?? null;
+
+            $ticket = Ticket::create([
+                'seat_id' => $seatId,
+                'trip_id' => $tripId,
+                'status'  => Ticket::$status[0],
+
+                'departing_station' => is_array($depart) ? $depart[0] : $depart,
+                'arriving_station'   => is_array($arrive) ? $arrive[0] : $arrive,
+
+                'user_id' => auth()->id(),
+            ]);
+
+            $createdTickets[] = $ticket;
+        }
+
+        return view('trips.payment', ['tickets' => $createdTickets]);
     }
 
     /**
@@ -53,16 +85,19 @@ class TicketController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        foreach ($request->seat_ids as $key => $seat) {
+            Ticket::where('seat_id', '=', $seat)->update([
+                'status' => Ticket::$status[1]
+            ]);
+        }
+
+        return redirect()->route('tickets.index')->with('success', 'Білети оформлени');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
-    {
-        //
-    }
+    public function show() {}
 
     /**
      * Show the form for editing the specified resource.

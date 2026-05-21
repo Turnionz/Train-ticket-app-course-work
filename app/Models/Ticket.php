@@ -10,7 +10,7 @@ class Ticket extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['status'];
+    protected $fillable = ['status', 'seat_id', 'trip_id', 'user_id', 'departing_station', 'arriving_station'];
 
     public static array $status = ['reserved', 'booked', 'refunded', 'expired'];
 
@@ -19,9 +19,9 @@ class Ticket extends Model
         return $this->belongsTo(Seat::class);
     }
 
-    public function passenger(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(Passenger::class);
+        return $this->belongsTo(User::class);
     }
 
     public function trip(): BelongsTo
@@ -31,11 +31,11 @@ class Ticket extends Model
 
     public function departingStation(): BelongsTo
     {
-        return $this->belongsTo(Station::class);
+        return $this->belongsTo(Station::class, 'departing_station');
     }
 
     public function arrivalStation(): BelongsTo
     {
-        return $this->belongsTo(Station::class);
+        return $this->belongsTo(Station::class, 'arriving_station');
     }
 }

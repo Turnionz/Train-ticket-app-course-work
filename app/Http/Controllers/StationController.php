@@ -72,7 +72,6 @@ class StationController extends Controller
         $stationsAdd = [];
         $stationsRemove = [];
 
-        // You need ->all() to loop through the request payload
         foreach ($request->all() as $key => $value) {
             if (str_starts_with($key, 'stations-add') && !empty($value)) {
                 $stationsAdd[] = (int) $value;
@@ -91,7 +90,6 @@ class StationController extends Controller
             self::dettachNeighbour($station, $stationsRemove);
         }
 
-        // validated() is a method, so it needs the parentheses
         $station->update($request->validated());
 
         return redirect()->route('stations.show', $station)->with('success', 'Станцію оновлено!');
@@ -106,7 +104,6 @@ class StationController extends Controller
 
     public function deregisterNeighbour(Station $station, Request $request)
     {
-        // Wrap the single ID in an array so dettachNeighbour can process it
         self::dettachNeighbour($station, [$request->input('station_b')]);
 
         return redirect()->back()->with('success', 'Станції більше не сусіди!');
@@ -143,10 +140,8 @@ class StationController extends Controller
     protected static function attachNeighbour(Station $station, Request|array $request)
     {
         if (is_array($request)) {
-            // We are passing $validated['stations'], so this block runs!
             foreach ($request as $key => $value) {
 
-                // Optional: Prevent a station from connecting to itself
                 if ($station->id == $value) continue;
 
                 if ($station->id < $value) {
@@ -157,19 +152,16 @@ class StationController extends Controller
                     $station_b = $station->id;
                 }
 
-                // Fix: Changed from create() to firstOrCreate()
                 ConnectedStations::firstOrCreate([
                     'station_a' => $station_a,
                     'station_b' => $station_b,
                 ]);
             }
         } else {
-            // This handles your other route (adding a single neighbor later)
             $validatedRequest = $request->validate([
                 'station_id' => 'required|integer'
             ]);
 
-            // Optional: Prevent a station from connecting to itself
             if ($station->id == $validatedRequest['station_id']) {
                 return;
             }
@@ -182,7 +174,6 @@ class StationController extends Controller
                 $station_b = $station->id;
             }
 
-            // Fix: Changed from create() to firstOrCreate()
             ConnectedStations::firstOrCreate([
                 'station_a' => $station_a,
                 'station_b' => $station_b,

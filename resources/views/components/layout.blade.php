@@ -56,7 +56,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="#">Квитки</a>
+                        <a href="{{ route('tickets.index') }}">Квитки</a>
                     </li>
                     @if (auth()->user()->role === \App\Models\User::$role[2])
                         <li>
@@ -71,9 +71,6 @@
                         </li>
                         <li>
                             <a href="{{ route('trips.index') }}">Рейси</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('routes.index') }}">Направлення</a>
                         </li>
                         <li>
                             <a href="{{ route('stations.index') }}">Станції</a>

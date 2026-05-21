@@ -3,9 +3,11 @@
 
     <h1 class="text-2xl font-bold mb-2">{{ $trip->route->departStation->address }} - {{ $trip->route->arrivalStation->address }}</h1>
     
-    <form action="{{ route('trips.buy', $trip) }}" method="POST">
+    <form action="{{ route('trips.details', $trip) }}" method="POST">
 
         @csrf
+        @method('POST')
+        <input type="hidden" name="trip_id" value="{{ $trip->id }}">
         @forelse ($trip->train->wagons as $wagon)
             <div>
                 <x-card class="m-3 col-span-8">

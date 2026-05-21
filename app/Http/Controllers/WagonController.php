@@ -11,10 +11,7 @@ class WagonController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        return view('wagons.index', ['wagons' => Wagon::with('seats')->paginate(15)]);
-    }
+    public function index() {}
 
     /**
      * Show the form for creating a new resource.
@@ -57,8 +54,6 @@ class WagonController extends Controller
                     ]);
 
                 $seatNumber = 1;
-
-                // Loop through the layout map to generate seats for this specific wagon
                 foreach ($layoutMap as $row) {
                     foreach ($row as $cell) {
                         if ($cell === 'seat') {
@@ -85,7 +80,6 @@ class WagonController extends Controller
 
                 $seatNumber = 1;
 
-                // Loop through the layout map to generate seats for this specific wagon
                 foreach ($layoutMap as $row) {
                     foreach ($row as $cell) {
                         if ($cell === 'seat') {

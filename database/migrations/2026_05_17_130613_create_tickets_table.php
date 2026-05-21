@@ -5,6 +5,7 @@ use App\Models\Seat;
 use App\Models\Station;
 use App\Models\Ticket;
 use App\Models\Trip;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -20,8 +21,8 @@ return new class extends Migration
             $table->id();
 
             $table->foreignIdFor(Seat::class)->constrained();
-            $table->foreignIdFor(Passenger::class)->constrained();
             $table->foreignIdFor(Trip::class)->constrained();
+            $table->foreignIdFor(User::class)->constrained();
             $table->foreignId('departing_station')->nullable()->constrained('stations')->onDelete('set null');
             $table->foreignId('arriving_station')->nullable()->constrained('stations')->onDelete('set null');
             $table->enum('status', Ticket::$status);

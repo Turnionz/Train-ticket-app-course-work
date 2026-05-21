@@ -35,9 +35,11 @@ Route::resource('stations', StationController::class);
 
 Route::resource('routes', RouteController::class);
 
-Route::post('/trips/{trip}/buy', [TicketController::class, 'buy'])->name('trips.buy');
-Route::post('/trips/payment', [TicketController::class, 'store'])->name('trips.payment');
+Route::resource('tickets', TicketController::class);
 
+Route::post('/trips/{trip}/details', [TripController::class, 'details'])->name('trips.details');
+Route::post('/trips/buy', [TicketController::class, 'buy'])->name('trips.buy');
+Route::post('/trips/payment', [TicketController::class, 'store'])->name('trips.payment');
 
 Route::delete('deregNeighbour/{station}', [StationController::class, 'deregisterNeighbour'])->name('deregNeighbour');
 Route::put('registerNeighbour/{station}', [StationController::class, 'registerNeighbour'])->name('registerNeighbour');

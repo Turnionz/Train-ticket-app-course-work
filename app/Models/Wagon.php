@@ -17,11 +17,9 @@ class Wagon extends Model
 
     public static function getPresets(): array
     {
-        // This finds: your-project-root/database/data/wagon_presets.json
         $path = database_path('data/wagon_presets.json');
 
         if (!file_exists($path)) {
-            // This will now throw a very clear error if the file is missing!
             throw new \Exception("JSON file not found at: " . $path);
         }
 

@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\Assignment;
 use App\Models\Crew;
 use App\Models\Employee;
-use App\Models\Passenger;
 use App\Models\Route;
 use App\Models\RouteStop;
 use App\Models\Seat;
@@ -109,12 +108,11 @@ class DatabaseSeeder extends Seeder
             DB::table('seats')->insert($chunk);
         }
 
+        // Залишаємо створення звичайних користувачів, але без пасажирів
         for ($i = 0; $i <= 126; $i++) {
-            User::factory()
-                ->has(Passenger::factory()->count(rand(1, 5)))
-                ->create([
-                    'role' => User::$role[3]
-                ]);
+            User::factory()->create([
+                'role' => User::$role[3]
+            ]);
         }
 
         $stations = Station::factory(350)->create();
@@ -259,7 +257,10 @@ class DatabaseSeeder extends Seeder
         }
 
         $trips = Trip::with(['train.wagons', 'route.routeStops'])->get();
-        $allPassengers = Passenger::all();
+
+        // НОВЕ: Отримуємо всіх користувачів зі статусом "пасажир" (User::$role[3]), 
+        // щоб пізніше прив'язати їх до квитків.
+        $standardUsers = User::where('role', User::$role[3])->get();
 
         foreach ($trips as $trip) {
             $stops = $trip->route->routeStops->sortBy('order')->values();
@@ -275,25 +276,25 @@ class DatabaseSeeder extends Seeder
                 ->limit(10)
                 ->get();
 
-            $ticketsToGenerate = min(10, $availableSeats->count(), $allPassengers->count());
+            $ticketsToGenerate = min(10, $availableSeats->count());
 
             if ($ticketsToGenerate === 0) {
                 continue;
             }
 
-            $tripPassengers = $allPassengers->random($ticketsToGenerate);
-
             for ($i = 0; $i < $ticketsToGenerate; $i++) {
                 $seat = $availableSeats[$i];
-                $passenger = $tripPassengers[$i];
 
                 $departIndex = rand(0, $stops->count() - 2);
                 $arrivalIndex = rand($departIndex + 1, $stops->count() - 1);
 
+                // НОВЕ: Обираємо випадкового користувача з нашої колекції
+                $randomUser = $standardUsers->random();
+
                 Ticket::factory()->create([
-                    'passenger_id' => $passenger->id,
                     'trip_id' => $trip->id,
                     'seat_id' => $seat->id,
+                    'user_id' => $randomUser->id, // НОВЕ: Прив'язуємо ID користувача
                     'departing_station' => $stops[$departIndex]->station_id,
                     'arriving_station' => $stops[$arrivalIndex]->station_id,
                     'status' => Ticket::$status[1]

@@ -8,7 +8,6 @@
 
     <h1 class="text-4xl text-center font-bold">Редагування Станції №{{ $station->id }}</h1>
 
-     {{--Edit name and capacity. Mass add and removal of neighbours  --}}
     <form action="{{ route('stations.update', $station)}}" method="POST">
             @csrf
             @method('PUT')

@@ -26,8 +26,8 @@
 > >     > - Selection of seats using checkbox (dynamic pricing)
 > >     > - Adding/reusing/editing different passengers for one user
 > > - ### Station creation/editing (operator only)
-> >     > - General form
-> >     > - Assigning neighbouring stations
+> >     > - ~General form~
+> >     > - ~Assigning neighbouring stations~
 > > - ### ~Train and wagon creation/editing (operator only)~
 > >     > - ~Creating a train~
 > >     > - ~Add abbility to make new wagons just for this train, transfering the user to wagon creation page~
