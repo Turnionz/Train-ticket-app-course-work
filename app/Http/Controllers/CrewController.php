@@ -7,6 +7,7 @@ use App\Models\Crew;
 use App\Models\Employee;
 use App\Models\Trip;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class CrewController extends Controller
 {
@@ -15,6 +16,7 @@ class CrewController extends Controller
      */
     public function index()
     {
+        Gate::authorize('employee-level');
         return view('crews.index', [
             'crews' => Crew::with(['assignments' => function ($query) {
                 $query->whereHas('trip', function ($tripQuery) {
@@ -29,6 +31,7 @@ class CrewController extends Controller
      */
     public function create()
     {
+        Gate::authorize('operator-level');
         $tripsValid = Trip::where('depart_time', '>=', now())->doesntHave('assignment')->get();
 
         return view('crews.create', ['employees' => Employee::all()->where('crew_id', '=', null), 'trips' => $tripsValid]);
@@ -39,6 +42,8 @@ class CrewController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize('operator-level');
+
         $rules = [];
         $organizedData = [];
 
@@ -114,6 +119,8 @@ class CrewController extends Controller
      */
     public function destroy(Crew $crew)
     {
+        Gate::authorize('operator-level');
+
         foreach ($crew->employees as $employee) {
             $employee->update(['crew_id' => null]);
         }

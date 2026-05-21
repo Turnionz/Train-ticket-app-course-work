@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Employee;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Testing\Fluent\Concerns\Has;
 
@@ -34,6 +35,8 @@ class EmployeeController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize('operator-level');
+
         $request->validate([
             'email' => 'required|email',
             'first_name' => 'required',
@@ -85,6 +88,8 @@ class EmployeeController extends Controller
      */
     public function update(Employee $employee, Request $request)
     {
+        Gate::authorize('operator-level');
+
         $validated = $request->validate([
             'crew_id' => 'integer',
             'id' => 'integer'
@@ -100,6 +105,7 @@ class EmployeeController extends Controller
      */
     public function destroy(Employee $employee)
     {
+        Gate::authorize('operator-level');
 
         $employee->user->delete();
         $employee->delete();

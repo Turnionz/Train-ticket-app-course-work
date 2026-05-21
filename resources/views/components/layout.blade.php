@@ -58,30 +58,20 @@
                     <li>
                         <a href="{{ route('tickets.index') }}">Квитки</a>
                     </li>
-                    @if (auth()->user()->role === \App\Models\User::$role[2])
+                    @can('employee')
                         <li>
                             <a href="{{ route('employees.show', auth()->user()->employee_id) }}">Робочий розклад</a>
                         </li>
-                    @elseif (auth()->user()->role === \App\Models\User::$role[1] || \App\Models\User::$role[0])
-                        <li>
-                            <a href="{{ route('employees.index') }}">Робітники</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('crews.index') }}">Бригади</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('trips.index') }}">Рейси</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('stations.index') }}">Станції</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('trains.index') }}">Потяги</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('wagons.index') }}">Вагони</a>
-                        </li>   
-                    @endif
+                    @endcan
+
+                    @can('operator-level')
+                        <li><a href="{{ route('employees.index') }}">Робітники</a></li>
+                        <li><a href="{{ route('crews.index') }}">Бригади</a></li>
+                        <li><a href="{{ route('trips.index') }}">Рейси</a></li>
+                        <li><a href="{{ route('stations.index') }}">Станції</a></li>
+                        <li><a href="{{ route('trains.index') }}">Потяги</a></li>
+                        <li><a href="{{ route('wagons.index') }}">Вагони</a></li>
+                    @endcan
                     <li>
                         <form action="{{ route('auth.destroy') }}" method="POST">
                             @csrf

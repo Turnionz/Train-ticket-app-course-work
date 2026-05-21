@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Seat;
+use App\Models\Ticket;
 use App\Models\Trip;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class TripController extends Controller
 {
@@ -53,8 +55,25 @@ class TripController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
-        return redirect()->route('tickets.view')->with('success', 'Ви купили квитки');
+        $request->validate([
+            'ticket_ids'   => 'required|array',
+            'ticket_ids.*' => 'exists:tickets,id',
+        ]);
+
+        // 1. Fetch the tickets trying to be updated
+        $tickets = Ticket::whereIn('id', $request->ticket_ids)->get();
+
+        // 2. Authorize ownership for each individual ticket
+        foreach ($tickets as $ticket) {
+            Gate::authorize('owner', $ticket);
+        }
+
+        // 3. If no exceptions were thrown, safe to update
+        Ticket::whereIn('id', $request->ticket_ids)->update([
+            'status' => 'booked'
+        ]);
+
+        return redirect()->route('tickets.view')->with('success', 'Ви успішно купили квитки!');
     }
 
     /**
@@ -71,6 +90,8 @@ class TripController extends Controller
 
     public function details(Request $request)
     {
+        Gate::authorize('user-level');
+
         $validated = $request->validate([
             'trip_id' => 'required|exists:trips,id',
             'seat_ids' => 'required|array|min:1',

@@ -3,6 +3,24 @@
 
     <h1 class="text-2xl font-bold mb-4">Мої квитки</h1>
     
+        <div class="mb-2 bg-teal-200 rounded-lg pb-1">
+            <h2 class="pt-2 pl-3 text-3xl font-semibold">Знайти білет</h2>
+            <form action="{{ route('tickets.index') }}" method="GET" class="flex flex-auto w-full gap-4 items-center p-2">
+                <div class="flex-1 bg-white">
+                    <x-search-bar placeholder="Звідки" name="from" type="text" class="text-lg"/>
+                </div>
+                <div class="flex-1 bg-white">
+                    <x-search-bar placeholder="Куди" name="to" type="text" class="text-lg"/>
+                </div>
+                <div class="flex-1 bg-white">
+                    <x-search-bar name="date" type="date" class="text-lg"/>
+                </div>
+                <div class="flex-1">
+                    <button class="cursor-pointer bg-emerald-300 rounded-xl text-2xl p-2 font-semibold text-center w-full hover:bg-emerald-400 hover:shadow-md">Знайти</button>
+                </div>  
+            </form>
+        </div>
+
     <div class="flex flex-col gap-4">
         @forelse ($tickets as $ticket)
             <x-card class="p-4">
@@ -42,6 +60,16 @@
                             </div>
                         </div>
                     </div>
+                </div>
+
+                <div class="mt-4 flex justify-end">
+                    <form action="{{ route('tickets.destroy', $ticket->id) }}" method="POST" onsubmit="return confirm('Ви впевнені, що хочете скасувати цей квиток?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
+                            Скасувати квиток
+                        </button>
+                    </form>
                 </div>
             </x-card>
         @empty

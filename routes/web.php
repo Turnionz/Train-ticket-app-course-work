@@ -41,5 +41,7 @@ Route::post('/trips/{trip}/details', [TripController::class, 'details'])->name('
 Route::post('/trips/buy', [TicketController::class, 'buy'])->name('trips.buy');
 Route::post('/trips/payment', [TicketController::class, 'store'])->name('trips.payment');
 
+Route::delete('/tickets/{ticket}', [TicketController::class, 'destroy'])->name('tickets.destroy');
+
 Route::delete('deregNeighbour/{station}', [StationController::class, 'deregisterNeighbour'])->name('deregNeighbour');
 Route::put('registerNeighbour/{station}', [StationController::class, 'registerNeighbour'])->name('registerNeighbour');

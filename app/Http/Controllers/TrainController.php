@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Train;
 use App\Models\Wagon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class TrainController extends Controller
 {
@@ -13,6 +14,8 @@ class TrainController extends Controller
      */
     public function index()
     {
+        Gate::authorize('operator-level');
+
         return view('trains.index', ['trains' => Train::with(['trip', 'wagons', 'seats'])->paginate(15)]);
     }
 
@@ -21,6 +24,8 @@ class TrainController extends Controller
      */
     public function create()
     {
+        Gate::authorize('operator-level');
+
         return view('trains.create');
     }
 
@@ -29,6 +34,8 @@ class TrainController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize('operator-level');
+
         $rules = [
             'train_number' => 'required|string|max:10',
             'type' => 'required|string',
@@ -121,6 +128,8 @@ class TrainController extends Controller
      */
     public function show(Train $train)
     {
+        Gate::authorize('operator-level');
+
         return view('trains.show', ['train' => $train->load('wagons')]);
     }
 
@@ -129,6 +138,8 @@ class TrainController extends Controller
      */
     public function edit(Train $train)
     {
+        Gate::authorize('operator-level');
+
         return view('trains.edit', ['train' => $train]);
     }
 
@@ -137,6 +148,8 @@ class TrainController extends Controller
      */
     public function update(Request $request, Train $train)
     {
+        Gate::authorize('operator-level');
+
         $rules = [];
         $organizedData = [];
 
@@ -171,9 +184,20 @@ class TrainController extends Controller
      */
     public function destroy(Train $train)
     {
+        Gate::authorize('operator-level');
+
+        $hasTickets = \App\Models\Ticket::whereHas('seat.wagon', function ($query) use ($train) {
+            $query->where('train_id', $train->id);
+        })->exists();
+
+        if ($hasTickets) {
+            return back()->with('error', 'Помилка: не можна видалити потяг, оскільки у його вагонах є продані квитки!');
+        }
+
         foreach ($train->wagons as $wagon) {
             $wagon->update(['train_id' => null, 'wagon_number' => null]);
         }
+
         $train->delete();
 
         return redirect()->route('trains.index')->with('success', 'Дія була виконана успішно');

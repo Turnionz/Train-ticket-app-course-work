@@ -3,19 +3,44 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ticket;
-use App\Models\Trip;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class TicketController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $user = auth()->user();
-        $tickets = $user->tickets;
+
+        $filters = $request->validate([
+            'from' => 'nullable|string',
+            'to'   => 'nullable|string',
+            'date' => 'nullable|date'
+        ]);
+
+        $tickets = $user->tickets()
+            ->with(['trip.train', 'seat', 'departingStation', 'arrivalStation'])
+            ->when($request->filled('from'), function ($query) use ($filters) {
+                $query->whereHas('departingStation', function ($q) use ($filters) {
+                    $q->where('address', 'ilike', '%' . $filters['from'] . '%');
+                });
+            })
+            ->when($request->filled('to'), function ($query) use ($filters) {
+                $query->whereHas('arrivalStation', function ($q) use ($filters) {
+                    $q->where('address', 'ilike', '%' . $filters['to'] . '%');
+                });
+            })
+            ->when($request->filled('date'), function ($query) use ($filters) {
+                $query->whereHas('trip', function ($q) use ($filters) {
+                    $q->whereDate('depart_time', $filters['date']);
+                });
+            })
+            ->latest()
+            ->get();
 
         return view('tickets.index', ['tickets' => $tickets]);
     }
@@ -30,7 +55,8 @@ class TicketController extends Controller
 
     public function buy(Request $request)
     {
-        // 1. Валідація даних
+        Gate::authorize('user-level');
+
         $validated = $request->validate([
             'trip_id' => 'required|exists:trips,id',
             'seat_ids' => 'required|array|min:1',
@@ -85,6 +111,12 @@ class TicketController extends Controller
      */
     public function store(Request $request)
     {
+        $tickets = Ticket::whereIn('seat_id', $request->seat_ids)->get();
+
+        foreach ($tickets as $ticket) {
+            Gate::authorize('owner', $ticket);
+        }
+
         foreach ($request->seat_ids as $key => $seat) {
             Ticket::where('seat_id', '=', $seat)->update([
                 'status' => Ticket::$status[1]
@@ -93,7 +125,6 @@ class TicketController extends Controller
 
         return redirect()->route('tickets.index')->with('success', 'Білети оформлени');
     }
-
     /**
      * Display the specified resource.
      */
@@ -118,8 +149,12 @@ class TicketController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Ticket $ticket)
     {
-        //
+        Gate::authorize('owner', $ticket);
+
+        $ticket->delete();
+
+        return back()->with('success', 'Ваш квиток було успішно скасовано.');
     }
 }

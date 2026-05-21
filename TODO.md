@@ -7,7 +7,7 @@
 > > - ~Create factories~
 > > - ~Set up the seeder~
 > > - ~Create and run migrations~
-> > - BE SURE THAT YOU ACTUALLY GOT ALL THE RELATIONS RIGHT
+> > - ~BE SURE THAT YOU ACTUALLY GOT ALL THE RELATIONS RIGHT~
 
 # Auth
 
@@ -22,9 +22,9 @@
 > ## Make the logic for creating/editing different kind of Models
 >
 > > - ### Ticket creation/editing
-> >     > - Add search function for Trips (must show count of free spaces)
-> >     > - Selection of seats using checkbox (dynamic pricing)
-> >     > - Adding/reusing/editing different passengers for one user
+> >     > - ~Add search function for Trips (must show count of free spaces)~
+> >     > - ~Selection of seats using checkbox (dynamic pricing)~
+> >     > - ~Adding/reusing/editing different passengers for one user~
 > > - ### Station creation/editing (operator only)
 > >     > - ~General form~
 > >     > - ~Assigning neighbouring stations~

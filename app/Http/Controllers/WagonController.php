@@ -5,13 +5,18 @@ namespace App\Http\Controllers;
 use App\Models\Train;
 use App\Models\Wagon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class WagonController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index() {}
+    public function index()
+    {
+        Gate::authorize('operator-level');
+        return view('wagons.index', ['wagons' => Wagon::paginate(15)]);
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -26,6 +31,8 @@ class WagonController extends Controller
      */
     public function store(Request $request)
     {
+        Gate::authorize('operator-level');
+
         $request = $request->validate([
             'amount' => 'integer|required',
             'type_select' => 'required',
@@ -105,6 +112,8 @@ class WagonController extends Controller
      */
     public function show(Wagon $wagon)
     {
+        Gate::authorize('operator-level');
+
         return view('wagons.show', ['wagon' => $wagon]);
     }
 
@@ -121,6 +130,8 @@ class WagonController extends Controller
      */
     public function update(Request $request, Wagon $wagon)
     {
+        Gate::authorize('operator-level');
+
         $request = $request->validate([
             'train_number' => 'nullable|integer'
         ]);
@@ -142,8 +153,21 @@ class WagonController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Wagon $wagon)
     {
-        //
+        Gate::authorize('operator-level');
+
+        $hasTickets = \App\Models\Ticket::whereHas('seat', function ($query) use ($wagon) {
+            $query->where('wagon_id', $wagon->id);
+        })->exists();
+
+        if ($hasTickets) {
+            return back()->with('error', 'Помилка: не можна видалити вагон, оскільки у ньому є продані або заброньовані квитки!');
+        }
+        $wagon->seats()->delete();
+
+        $wagon->delete();
+
+        return redirect()->route('wagons.index')->with('success', 'Вагон та всі його місця були успішно видалені.');
     }
 }

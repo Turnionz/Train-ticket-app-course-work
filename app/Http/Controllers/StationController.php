@@ -6,6 +6,7 @@ use App\Http\Requests\StationRequest;
 use App\Models\ConnectedStations;
 use App\Models\Station;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class StationController extends Controller
 {
@@ -30,6 +31,8 @@ class StationController extends Controller
      */
     public function store(StationRequest $request)
     {
+        Gate::authorize('operator-level');
+
         $validated = $request->validated();
 
         $station = Station::create([
@@ -49,6 +52,8 @@ class StationController extends Controller
      */
     public function show(Station $station)
     {
+        Gate::authorize('operator-level');
+
         $station->load(['connectionsAsA.stationB', 'connectionsAsB.stationA']);
 
         return view('stations.show', compact('station'));
@@ -59,6 +64,8 @@ class StationController extends Controller
      */
     public function edit(Station $station)
     {
+        Gate::authorize('operator-level');
+
         $station->load(['connectionsAsA.stationA', 'connectionsAsB.stationB']);
 
         return view('stations.edit', ['station' => $station]);
@@ -69,6 +76,8 @@ class StationController extends Controller
      */
     public function update(StationRequest $request, Station $station)
     {
+        Gate::authorize('operator-level');
+
         $stationsAdd = [];
         $stationsRemove = [];
 
@@ -97,6 +106,8 @@ class StationController extends Controller
 
     public function registerNeighbour(Station $station, Request $request)
     {
+        Gate::authorize('operator-level');
+
         self::attachNeighbour($station, $request);
 
         return redirect()->route('stations.show', ['station' => $station])->with('success', 'Додано сусідню станцію!');
@@ -104,6 +115,8 @@ class StationController extends Controller
 
     public function deregisterNeighbour(Station $station, Request $request)
     {
+        Gate::authorize('operator-level');
+
         self::dettachNeighbour($station, [$request->input('station_b')]);
 
         return redirect()->back()->with('success', 'Станції більше не сусіди!');
@@ -114,6 +127,8 @@ class StationController extends Controller
      */
     public function destroy(Station $station)
     {
+        Gate::authorize('operator-level');
+
         $station->delete();
 
         return redirect()->route('stantions.index')->with('success', 'Станція видалена!');
