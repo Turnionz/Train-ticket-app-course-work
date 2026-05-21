@@ -23,7 +23,7 @@ Route::middleware('guest')->group(function () {
 
 Route::middleware('auth')->group(function () {
 
-    Route::delete('logout', fn() => to_route('auth.destroy'))->name('logout');
+    Route::delete('logout', [AuthController::class, 'destroy'])->name('logout');
     Route::delete('auth', [AuthController::class, 'destroy'])->name('auth.destroy');
 
     Route::resource('trains', TrainController::class);

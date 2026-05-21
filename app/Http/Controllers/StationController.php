@@ -131,7 +131,7 @@ class StationController extends Controller
 
         $station->delete();
 
-        return redirect()->route('stantions.index')->with('success', 'Станція видалена!');
+        return redirect()->route('stations.index')->with('success', 'Станція видалена!');
     }
 
     private static function dettachNeighbour(Station $station, array $neighbourIds)

@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\Route;
+use App\Models\Train;
 use App\Models\Trip;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -10,15 +12,15 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class TripFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+    protected $model = Trip::class;
+
     public function definition(): array
     {
         return [
-            //
+            'train_id' => Train::factory(),
+            'route_id' => Route::factory(),
+            'depart_time' => now()->addDays(1),
+            'arrival_time' => now()->addDays(1)->addHours(4),
         ];
     }
 }

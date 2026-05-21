@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Train;
 use App\Models\Wagon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -10,15 +11,15 @@ use Illuminate\Database\Eloquent\Factories\Factory;
  */
 class WagonFactory extends Factory
 {
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+    protected $model = Wagon::class;
+
     public function definition(): array
     {
         return [
-            //
+            'train_id' => Train::factory(),
+            'wagon_number' => $this->faker->numberBetween(1, 10),
+            'type' => 'Сидячий',
+            'layout_map' => [],
         ];
     }
 }

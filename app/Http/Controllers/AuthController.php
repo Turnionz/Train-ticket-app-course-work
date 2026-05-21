@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+
+
     function create()
     {
         return view('auth.create');
@@ -77,10 +79,8 @@ class AuthController extends Controller
     {
         Auth::logout();
 
-        // Clearing out user session data
         request()->session()->invalidate();
 
-        // Regenerating token for csrf forms
         request()->session()->regenerateToken();
 
         return redirect('/');

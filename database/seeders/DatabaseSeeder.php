@@ -56,7 +56,7 @@ class DatabaseSeeder extends Seeder
         $allSeatsToInsert = [];
         $now = now();
 
-        // 1. Fetch the JSON presets exactly ONCE before the loops start!
+
         $wagonPresets = Wagon::getPresets();
 
         for ($i = 0; $i <= 55; $i++) {
@@ -74,7 +74,7 @@ class DatabaseSeeder extends Seeder
                 $allowedClasses = $wagonToSeatMap[$wagonType];
                 $wagonSeatClass = $allowedClasses[array_rand($allowedClasses)];
 
-                // 2. Use the array we fetched from the JSON file
+
                 $layoutMap = $wagonPresets[$wagonType] ?? [];
 
                 $wagon = Wagon::factory()
@@ -108,7 +108,6 @@ class DatabaseSeeder extends Seeder
             DB::table('seats')->insert($chunk);
         }
 
-        // Залишаємо створення звичайних користувачів, але без пасажирів
         for ($i = 0; $i <= 126; $i++) {
             User::factory()->create([
                 'role' => User::$role[3]
@@ -258,8 +257,6 @@ class DatabaseSeeder extends Seeder
 
         $trips = Trip::with(['train.wagons', 'route.routeStops'])->get();
 
-        // НОВЕ: Отримуємо всіх користувачів зі статусом "пасажир" (User::$role[3]), 
-        // щоб пізніше прив'язати їх до квитків.
         $standardUsers = User::where('role', User::$role[3])->get();
 
         foreach ($trips as $trip) {
