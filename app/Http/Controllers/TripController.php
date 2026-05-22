@@ -85,7 +85,7 @@ class TripController extends Controller
             'status' => 'booked'
         ]);
 
-        return redirect()->route('tickets.view')->with('success', 'Ви успішно купили квитки!');
+        return redirect()->route('tickets.index')->with('success', 'Ви успішно купили квитки!');
     }
 
     /**
