@@ -7,7 +7,6 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Testing\Fluent\Concerns\Has;
 
 class EmployeeController extends Controller
 {
@@ -77,11 +76,6 @@ class EmployeeController extends Controller
 
         return view('employees.show', ['employee' => $employee]);
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit() {}
 
     /**
      * Update the specified resource in storage.

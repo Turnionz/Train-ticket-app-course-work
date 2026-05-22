@@ -8,7 +8,6 @@ use App\Models\Station;
 use App\Models\Ticket;
 use App\Models\Trip;
 use Carbon\Carbon;
-use GuzzleHttp\Psr7\Request as Psr7Request;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -131,14 +130,6 @@ class TripController extends Controller
         return view('trips.details', compact('seats', 'trip_id', 'availableStations'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
     public function tripCreate(Request $request)
     {
 
@@ -226,22 +217,6 @@ class TripController extends Controller
         ]);
 
         return redirect()->route('trips.show', $trip)->with('success', 'Рейс створено успішно!');
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
     }
 
     private function expectedArrivalTime(Carbon $departTime, Route $route): Carbon

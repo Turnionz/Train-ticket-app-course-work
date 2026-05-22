@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ticket;
-use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -43,14 +42,6 @@ class TicketController extends Controller
             ->get();
 
         return view('tickets.index', ['tickets' => $tickets]);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     public function buy(Request $request)
@@ -124,26 +115,6 @@ class TicketController extends Controller
         }
 
         return redirect()->route('tickets.index')->with('success', 'Білети оформлени');
-    }
-    /**
-     * Display the specified resource.
-     */
-    public function show() {}
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
     }
 
     /**

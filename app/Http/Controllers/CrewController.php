@@ -87,6 +87,8 @@ class CrewController extends Controller
      */
     public function show(Crew $crew)
     {
+        Gate::authorize('employee-level');
+
         $crew->load([
             'assignments' => function ($query) {
                 $query->whereHas('trip', function ($tripQuery) {
@@ -104,14 +106,6 @@ class CrewController extends Controller
     public function edit(Crew $crew)
     {
         return view('crews.edit', $crew);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
     }
 
     /**

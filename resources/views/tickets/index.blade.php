@@ -63,13 +63,20 @@
                 </div>
 
                 <div class="mt-4 flex justify-end">
-                    <form action="{{ route('tickets.destroy', $ticket->id) }}" method="POST" onsubmit="return confirm('Ви впевнені, що хочете скасувати цей квиток?');">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">
-                            Скасувати квиток
-                        </button>
-                    </form>
+                    <livewire:overlay-form 
+                        buttonName='Скасувати квиток' 
+                        buttonStyle='bg-red-600 rounded-lg text-lg font-semibold p-2 hover:bg-red-500 hover:shadow-md cursor-pointer h-full w-full'>
+                        <h2 class="text-4xl font-semibold">Точно хочите скасувати квиток?</h2>
+                        <form action="{{ route('tickets.destroy', $ticket) }}" method="POST" class="flex flex-auto w-full gap-4 items-center p-2 mb-2">
+                            @csrf
+                            @method('DELETE')
+                            <div class="flex justify-center w-full">
+                                <button type="submit" class="text-4xl font-semibold p-5 bg-red-600 rounded-md hover:bg-red-700 hover:shadow-md cursor-pointer w-full h-full mt-2">
+                                    Скасувати квиток
+                                </button>
+                            </div>
+                        </form>
+                    </livewire:overlay-form>
                 </div>
             </x-card>
         @empty
