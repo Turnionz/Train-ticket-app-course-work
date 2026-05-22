@@ -187,9 +187,12 @@ class TrainController extends Controller
     {
         Gate::authorize('operator-level');
 
-        $hasActiveTickets = \App\Models\Ticket::whereHas('seat.wagon', function ($query) use ($train) {
+        $hasActiveTickets = Ticket::whereHas('seat.wagon', function ($query) use ($train) {
             $query->where('train_id', $train->id);
         })
+            ->whereHas('trip', function ($query) {
+                $query->where('depart_time', '>=', now());
+            })
             ->whereIn('status', ['reserved', 'booked'])
             ->exists();
 

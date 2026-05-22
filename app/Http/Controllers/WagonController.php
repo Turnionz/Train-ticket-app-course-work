@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ticket;
 use App\Models\Train;
 use App\Models\Wagon;
 use Illuminate\Http\Request;
@@ -154,9 +155,12 @@ class WagonController extends Controller
     {
         Gate::authorize('operator-level');
 
-        $hasActiveTickets = \App\Models\Ticket::whereHas('seat', function ($query) use ($wagon) {
+        $hasActiveTickets = Ticket::whereHas('seat', function ($query) use ($wagon) {
             $query->where('wagon_id', $wagon->id);
         })
+            ->whereHas('trip', function ($query) {
+                $query->where('depart_time', '>=', now());
+            })
             ->whereIn('status', ['reserved', 'booked'])
             ->exists();
 
