@@ -45,9 +45,9 @@
 > >     > - ~Crews must consist at least from 1 employee~
 > >     > - ~Assignments can be empty, so can exist before the trip~
 > > - ### Trip creation/editing (operator only)
-> >     > - Train availabilty error
+> >     > - ~Train availabilty error~
 > >     > - Crew assignment at creation (with availability error)
-> >     > - Trips should be able to change Route in RT, with a notification to everyone aboard that trip
-> >     > - Trips should be able to have emergency route change to a single station, also with notification to everyone on that trip
+> >     > - ~Trips should be able to change Route in RT, with a notification to everyone aboard that trip~
+> >     > - Trips should be able to have emergency route change to a single station, also with notification to everyone on that trip (later)
 
 # Create tests

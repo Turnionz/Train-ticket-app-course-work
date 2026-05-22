@@ -28,6 +28,8 @@
         </div>
     @endcan
 
+    
+
     @foreach ($trips as $trip)
         <x-card class="hover:shadow-md mt-4 rounded-xl">
             <a href="{{ route('trips.show', $trip) }}">
@@ -36,12 +38,37 @@
                         <div class="grid grid-cols-2 w-1/3">
                             <div>{{ $trip->train->train_number }}</div>
                             <div>{{ $trip->train->type }}</div>
+                            @php
+                                $searchFrom = request('from');
+                                $searchTo = request('to');
+
+                                $isTransitFrom = $searchFrom && stripos($trip->route->departStation->address, $searchFrom) === false;
+
+                                $isTransitTo = $searchTo && stripos($trip->route->arrivalStation->address, $searchTo) === false;
+                            @endphp
+
+
+                            @if($isTransitFrom || $isTransitTo)
+                                <div class="flex gap-2 mt-2 mb-2">
+                                    @if($isTransitFrom)
+                                        <span class="bg-teal-100 text-md font-semibold px-2.5 py-0.5 rounded border">
+                                            Цей рейс йде проїздом. Ви сможете сісти на станції {{ $searchFrom }}
+                                        </span>
+                                    @endif
+
+                                    @if($isTransitTo)
+                                        <span class="bg-teal-100 text-md font-semibold px-2.5 py-0.5 rounded border">
+                                            Цей рейс йде проїздом. Ви сможете вийти на станції {{ $searchFrom }}
+                                        </span>
+                                    @endif
+                                </div>
+                            @endif
                         </div>
                     </div>
                     <div>
                         <h2 class="text-lg font-medium">Кількість вагонів: {{ $trip->train->wagons->count() }}</h2>
                         <h2 class="text-lg font-medium">Кількість місць: {{ $trip->train->seats->count() }}</h2>
-                        <h2 class="text-lg font-medium">З них вільних: {{ $trip->train->seats->count() - \App\Models\Ticket::whereIn('seat_id', $trip->train->seats->pluck('id'))->count() }}</h2>
+                        <h2 class="text-lg font-medium">З них вільних: {{ $trip->train->seats->count() - $trip->tickets_count }}</h2>
                     </div>
                     <div class="justify-between w-full col-3">
                         <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 justify-between mt-1">

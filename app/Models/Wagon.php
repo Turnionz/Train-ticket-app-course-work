@@ -37,6 +37,7 @@ class Wagon extends Model
         return $this->hasMany(Seat::class);
     }
 
+
     protected $casts = [
         'layout_map' => 'array',
     ];

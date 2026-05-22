@@ -35,7 +35,7 @@
                                             @if($currentSeat)
                                                 <label class="relative flex items-center justify-center w-16 h-16">
                                                     <input type="checkbox" name="seat_ids[]" value="{{ $currentSeat->id }}" 
-                                                        @disabled($currentSeat->ticket)
+                                                        @disabled($currentSeat->tickets->isNotEmpty())
                                                         class="absolute inset-0 w-full h-full appearance-none rounded-md 
                                                             bg-green-500 hover:bg-green-400 checked:bg-blue-600 cursor-pointer 
                                                             disabled:bg-gray-400 disabled:cursor-not-allowed disabled:hover:bg-gray-400 transition-colors">

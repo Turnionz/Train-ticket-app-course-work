@@ -48,7 +48,6 @@
                         <h2 class="text-lg font-semibold">ІД вагона: {{ $wagon->id }}</h2>
                         <h2 class="text-lg font-medium">Тип: {{ $wagon->type }}</h2>
                         <p class="text-md font-medium">Кількість місць: {{ $wagon->seats->count() }}</p>
-                        <p class="text-md font-medium">З них зайнято: {{ $wagon->seats->count() - \App\Models\Ticket::whereIn('seat_id', $wagon ->seats->pluck('id'))->count() }}</p>
                     </div>
                 </div>
             </a>

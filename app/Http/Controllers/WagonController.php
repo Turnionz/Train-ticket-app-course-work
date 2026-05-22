@@ -114,7 +114,12 @@ class WagonController extends Controller
     {
         Gate::authorize('operator-level');
 
-        return view('wagons.show', ['wagon' => $wagon]);
+        $wagon->load([
+            'train.trip',
+            'seats.tickets'
+        ]);
+
+        return view('wagons.show', compact('wagon'));
     }
 
     /**
@@ -157,13 +162,16 @@ class WagonController extends Controller
     {
         Gate::authorize('operator-level');
 
-        $hasTickets = \App\Models\Ticket::whereHas('seat', function ($query) use ($wagon) {
+        $hasActiveTickets = \App\Models\Ticket::whereHas('seat', function ($query) use ($wagon) {
             $query->where('wagon_id', $wagon->id);
-        })->exists();
+        })
+            ->whereIn('status', ['reserved', 'booked'])
+            ->exists();
 
-        if ($hasTickets) {
-            return back()->with('error', 'Помилка: не можна видалити вагон, оскільки у ньому є продані або заброньовані квитки!');
+        if ($hasActiveTickets) {
+            return back()->with('error', 'Помилка: не можна видалити вагон, оскільки у ньому є активні або заброньовані квитки!');
         }
+
         $wagon->seats()->delete();
 
         $wagon->delete();

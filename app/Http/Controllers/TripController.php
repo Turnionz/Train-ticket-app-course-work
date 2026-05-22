@@ -25,19 +25,29 @@ class TripController extends Controller
             'date' => 'nullable|date'
         ]);
 
-        $trips = Trip::query()
+        $query = Trip::with([
+            'train.wagons',
+            'train.seats',
+            'route.departStation',
+            'route.arrivalStation'
+        ])
+            ->withCount(['tickets' => function ($query) {
+                $query->whereIn('status', ['reserved', 'booked']);
+            }]);
+
+        $trips = $query
             ->when($request->filled('from'), function ($query) use ($filters) {
-                $query->whereHas('route.departStation', function ($q) use ($filters) {
-                    $q->where('address', 'ilike', '%' . $filters['from'] . '%');
+                $query->whereHas('route.routeStops.station', function ($q) use ($filters) {
+                    $q->where('address', 'like', '%' . $filters['from'] . '%');
                 });
             })
             ->when($request->filled('to'), function ($query) use ($filters) {
-                $query->whereHas('route.arrivalStation', function ($q) use ($filters) {
-                    $q->where('address', 'ilike', '%' . $filters['to'] . '%');
+                $query->whereHas('route.routeStops.station', function ($q) use ($filters) {
+                    $q->where('address', 'like', '%' . $filters['to'] . '%');
                 });
             })
             ->when($request->filled('date'), function ($query) use ($filters) {
-                $query->whereDate('departure_time', $filters['date']);
+                $query->whereDate('depart_time', $filters['date']);
             })
             ->latest()
             ->where('depart_time', '>=', now())
@@ -83,11 +93,16 @@ class TripController extends Controller
      */
     public function show(Trip $trip)
     {
-        return view('trips.show', ['trip' => $trip->load([
-            'train',
+        $trip->load([
             'route.departStation',
-            'route.arrivalStation'
-        ])]);
+            'route.arrivalStation',
+            'train.wagons.seats.tickets' => function ($query) use ($trip) {
+                $query->where('trip_id', $trip->id)
+                    ->whereIn('status', ['reserved', 'booked']);
+            }
+        ]);
+
+        return view('trips.show', compact('trip'));
     }
 
     public function details(Request $request)

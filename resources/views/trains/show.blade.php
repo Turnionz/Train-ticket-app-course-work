@@ -1,5 +1,5 @@
 <x-layout>
-    <x-breadcrumbs class="mb-4" :links="['Рейси' => route('trips.index'), 'Потяги' => route('trains.index'), 'Потяг №' . $train->id => '#' ]" />
+    <x-breadcrumbs class="mb-4" :links="['Рейси' => route('trips.index'), 'Потяги' => route('trains.index'), 'Потяг №' . $train->train_number => '#' ]" />
 
     <div class="mb-4 flex justify-between items-center w-full">
         <livewire:overlay-form 
@@ -22,6 +22,7 @@
         </x-link-button>
     </div>
 
+    <h2 class="text-2xl font-bold">ID Потяга - {{ $train->id }}</h2>
 
     @forelse ($train->wagons as $wagon)
         <div class="grid grid-cols-9 gap-2">

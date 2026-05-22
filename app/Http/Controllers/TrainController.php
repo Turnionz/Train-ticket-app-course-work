@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Ticket;
 use App\Models\Train;
 use App\Models\Wagon;
 use Illuminate\Http\Request;
@@ -186,20 +187,23 @@ class TrainController extends Controller
     {
         Gate::authorize('operator-level');
 
-        $hasTickets = \App\Models\Ticket::whereHas('seat.wagon', function ($query) use ($train) {
+        $hasActiveTickets = \App\Models\Ticket::whereHas('seat.wagon', function ($query) use ($train) {
             $query->where('train_id', $train->id);
-        })->exists();
+        })
+            ->whereIn('status', ['reserved', 'booked'])
+            ->exists();
 
-        if ($hasTickets) {
-            return back()->with('error', 'Помилка: не можна видалити потяг, оскільки у його вагонах є продані квитки!');
+        if ($hasActiveTickets) {
+            return back()->with('error', 'Помилка: не можна видалити потяг, оскільки у його вагонах є активні або заброньовані квитки!');
         }
 
-        foreach ($train->wagons as $wagon) {
-            $wagon->update(['train_id' => null, 'wagon_number' => null]);
-        }
+        $train->wagons()->update([
+            'train_id' => null,
+            'wagon_number' => null
+        ]);
 
         $train->delete();
 
-        return redirect()->route('trains.index')->with('success', 'Дія була виконана успішно');
+        return redirect()->route('trains.index')->with('success', 'Потяг було успішно видалено.');
     }
 }
